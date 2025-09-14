@@ -1,0 +1,54 @@
+/* Custom scrollbar styles for POS sidebar and modal */
+.custom-scrollbar {
+	scrollbar-width: thin;
+	scrollbar-color: #B0A695 #F3EEEA;
+}
+
+/* Chrome, Edge, Safari */
+.custom-scrollbar::-webkit-scrollbar {
+	width: 8px;
+	border-radius: 8px;
+	background: #F3EEEA;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+	background: #B0A695;
+	border-radius: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+	background: #776B5D;
+}
+@import "tailwindcss";
+
+@theme {
+	--color-primary: #776B5D;
+	--color-secondary: #EBE3D5;
+	--color-accent: #B0A695;
+	--color-background: #F3EEEA;
+}
+
+/* Color utility classes for consistency */
+.text-primary { color: #776B5D; }
+.text-secondary { color: #EBE3D5; }
+.text-accent { color: #B0A695; }
+.text-background { color: #F3EEEA; }
+
+.bg-primary { background-color: #776B5D; }
+.bg-secondary { background-color: #EBE3D5; }
+.bg-accent { background-color: #B0A695; }
+.bg-background { background-color: #F3EEEA; }
+
+.border-primary { border-color: #776B5D; }
+.border-secondary { border-color: #EBE3D5; }
+.border-accent { border-color: #B0A695; }
+.border-background { border-color: #F3EEEA; }
+
+/* Prevent table elements from getting focus styles */
+table:focus,
+thead:focus,
+tbody:focus,
+tr:focus,
+th:focus,
+td:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
