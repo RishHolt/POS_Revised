@@ -104,7 +104,7 @@ const Menu = () => {
                 statusTags={statusTags}
             />
 
-            <div className="gap-6 grid pr-6 pb-[20px] w-full max-h-[60vh] overflow-y-auto custom-scrollbar" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
+            <div className="gap-6 grid grid-cols-4 sm:grid-cols-5 lg:grid-cols-6 pr-6 pb-[20px] w-full max-h-[60vh] overflow-y-auto custom-scrollbar">
                 {filteredMenu.map(item => (
                     <div key={item.menu_id} className={`flex flex-col items-start bg-white p-4 border rounded-xl transition duration-300 cursor-pointer hover:shadow-xl group border-[#B0A695] ${item.status === 'available' ? 'hover:border-[#776B5D]' : 'opacity-50 grayscale'}`}
                         onClick={() => handleEditItem(item)}>

@@ -152,7 +152,7 @@ const POS: React.FC = () => {
 
                 {/* Menu cards grid - matching Menu.tsx card structure exactly */}
                 <div className="flex pr-4 h-full overflow-y-auto custom-scrollbar">
-                    <div className="gap-6 grid w-full" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
+                    <div className="gap-6 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 w-full">
                         {filteredMenu.map(item => (
                             <div
                                 key={item.menu_id}

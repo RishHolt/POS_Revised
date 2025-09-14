@@ -42,7 +42,7 @@ const MenuModal: React.FC<MenuModalProps> = ({ item, open, onClose, onAddToOrder
             Currently Unavailable
         </div>
     ) : (
-        <div className="flex w-full justify-between items-center gap-4">
+        <div className="flex justify-between items-center gap-4 w-full">
             {/* Quantity Selector */}
             <div className="flex items-center gap-3">
                 <Button 
@@ -83,8 +83,8 @@ const MenuModal: React.FC<MenuModalProps> = ({ item, open, onClose, onAddToOrder
             className="h-[95vh] max-h-[700px]"
         >
             {/* Image Banner */}
-            <div className="relative w-full h-48 mb-6">
-                <img src={item.image} alt={item.name} className="w-full h-full object-cover rounded-lg" />
+            <div className="relative mb-6 w-full h-48">
+                <img src={item.image} alt={item.name} className="rounded-lg w-full h-full object-cover" />
             </div>
 
             <div className="space-y-6">
@@ -100,7 +100,7 @@ const MenuModal: React.FC<MenuModalProps> = ({ item, open, onClose, onAddToOrder
                                 onClick={() => setSelectedSize("small")}
                                 className="flex-1"
                             >
-                                Small <span className="font-semibold ml-1">{formatPrice(item.small_price)}</span>
+                                Small <span className="ml-1 font-semibold">{formatPrice(item.small_price)}</span>
                             </Button>
                         )}
                         {item.medium_price && (
@@ -109,7 +109,7 @@ const MenuModal: React.FC<MenuModalProps> = ({ item, open, onClose, onAddToOrder
                                 onClick={() => setSelectedSize("medium")}
                                 className="flex-1"
                             >
-                                Medium <span className="font-semibold ml-1">{formatPrice(item.medium_price)}</span>
+                                Medium <span className="ml-1 font-semibold">{formatPrice(item.medium_price)}</span>
                             </Button>
                         )}
                         {item.large_price && (
@@ -118,7 +118,7 @@ const MenuModal: React.FC<MenuModalProps> = ({ item, open, onClose, onAddToOrder
                                 onClick={() => setSelectedSize("large")}
                                 className="flex-1"
                             >
-                                Large <span className="font-semibold ml-1">{formatPrice(item.large_price)}</span>
+                                Large <span className="ml-1 font-semibold">{formatPrice(item.large_price)}</span>
                             </Button>
                         )}
                     </div>
@@ -136,12 +136,12 @@ const MenuModal: React.FC<MenuModalProps> = ({ item, open, onClose, onAddToOrder
                                     key={addon.id}
                                     variant={selectedAddons.includes(addon.name) ? "primary" : "secondary"}
                                     onClick={() => handleAddonToggle(addon.name)}
-                                    className="w-full !justify-between !items-start !flex"
+                                    className="!flex !justify-between !items-start w-full"
                                 >
                                     <div className="flex flex-col items-start">
                                         <span>{addon.name}</span>
                                         {addon.description && (
-                                            <span className="text-xs opacity-75 mt-1">{addon.description}</span>
+                                            <span className="opacity-75 mt-1 text-xs">{addon.description}</span>
                                         )}
                                     </div>
                                     <span className="font-semibold">+ {formatPrice(addon.price)}</span>
