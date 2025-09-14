@@ -47,6 +47,14 @@ export interface MenuItem {
 	};
 }
 
+// OrderItem extends MenuItem with additional order-specific properties
+export interface OrderItem extends MenuItem {
+	orderId: string; // Unique ID for each item in the order
+	quantity: number;
+	selectedSize: string;
+	selectedAddons: string[];
+}
+
 
 export const Category = [
 	{ label: "All Items", value: "all", icon: Clipboard },

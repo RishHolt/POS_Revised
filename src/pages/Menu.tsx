@@ -63,6 +63,9 @@ const Menu = () => {
             <Button onClick={() => setAddonModalOpen(true)} icon={Plus}>
                 Add Addons
             </Button>
+            {/* <Button onClick={() => setmealModalOpen(true)} icon={Plus}>
+                Add Meals
+            </Button> */}
             <Button onClick={() => setCategoryModalOpen(true)} icon={Plus}>
                 Add Category
             </Button>

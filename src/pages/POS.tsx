@@ -1,19 +1,14 @@
 import React, { useState, useMemo } from "react";
 import MenuModal from "../components/modals/MenuModal"; // Assuming MenuModal accepts an onAddToOrder prop
-import { Star, Trash2, ShoppingCart } from "lucide-react";
+import { Star, Trash2, ShoppingCart, CreditCard } from "lucide-react";
 import { menuData, Category } from "../mocks/menuData";
 import { addonData } from "../mocks/addonData";
-import type { MenuItem } from "../mocks/menuData"; // type-only import for MenuItem
+import type { MenuItem, OrderItem } from "../mocks/menuData"; // type-only import for MenuItem and OrderItem
 import SearchAndFilters from "../components/ui/SearchAndFilters";
 import PageHeader from "../components/ui/PageHeader";
+import Payment from "./Payment";
 
-// --- NEW: Define a type for items in the order ---
-interface OrderItem extends MenuItem {
-    orderId: string; // Unique ID for each item in the order
-    quantity: number;
-    selectedSize: string;
-    selectedAddons: string[];
-}
+// OrderItem is now imported from menuData.ts
 
 
 const POS: React.FC = () => {
@@ -26,6 +21,8 @@ const POS: React.FC = () => {
     const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
     // --- NEW: State for user feedback animation ---
     const [justAddedId, setJustAddedId] = useState<string | null>(null);
+    // --- NEW: State for payment flow ---
+    const [showPayment, setShowPayment] = useState(false);
 
 
     const filteredMenu = menuData.filter(item => {
@@ -110,6 +107,44 @@ const POS: React.FC = () => {
         setOrderItems([]);
     };
 
+    // --- NEW: Payment flow handlers ---
+    const handleProceedToPayment = () => {
+        if (orderItems.length === 0) {
+            alert("Please add items to the order before proceeding to payment");
+            return;
+        }
+        setShowPayment(true);
+    };
+
+    const handlePaymentComplete = (paymentData: any) => {
+        console.log("Payment completed:", paymentData);
+        // Here you would typically:
+        // 1. Save the order to your backend
+        // 2. Print receipt
+        // 3. Reset the order
+        // 4. Show success message
+        
+        // For now, just reset and go back to POS
+        setOrderItems([]);
+        setShowPayment(false);
+        alert(`Payment successful! Order ${paymentData.orderId} completed.`);
+    };
+
+    const handleBackFromPayment = () => {
+        setShowPayment(false);
+    };
+
+
+    // Show payment page if payment flow is active
+    if (showPayment) {
+        return (
+            <Payment
+                orderItems={orderItems}
+                onBack={handleBackFromPayment}
+                onPaymentComplete={handlePaymentComplete}
+            />
+        );
+    }
 
     return (
         <div className="flex lg:flex-row flex-col bg-[#F3EEEA] w-full h-full overflow-hidden">
@@ -261,7 +296,13 @@ const POS: React.FC = () => {
                             <span>Total</span>
                             <span>{formatPrice(orderTotal)}</span>
                         </div>
-                        <button className="bg-[#776B5D] hover:bg-[#776B5D]/90 py-3 rounded-lg w-full font-bold text-[#F3EEEA] text-lg transition-colors duration-150">Charge {formatPrice(orderTotal)}</button>
+                        <button 
+                            onClick={handleProceedToPayment}
+                            className="bg-[#776B5D] hover:bg-[#776B5D]/90 py-3 rounded-lg w-full font-bold text-[#F3EEEA] text-lg transition-colors duration-150 flex items-center justify-center"
+                        >
+                            <CreditCard className="w-5 h-5 mr-2" />
+                            Proceed to Payment - {formatPrice(orderTotal)}
+                        </button>
                     </div>
                 )}
             </div>
