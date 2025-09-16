@@ -11,6 +11,7 @@ import {
 	User,
 	Settings,
 	LogOut,
+	ScrollText
 } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getCurrentUser, getUserDisplayName, getUserRole, clearCurrentUser, hasPermission } from "../utils/auth";
@@ -98,6 +99,25 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onToggle }) => {
 													}`}
 								/>
 								POS
+							</Link>
+						)}
+						{hasPermission('Manage Order') && (
+							<Link
+								to="/Order"
+												className={`flex items-center gap-3 rounded-xl px-4 py-2 ${
+													location.pathname === "/Order"
+														? "bg-[#F3EEEA] text-[#776B5D]"
+														: "bg-[#776B5D] text-[#F3EEEA] border border-[#B0A695]"
+												} transition-colors`}
+							>
+												<ScrollText
+													className={`w-6 h-6 ${
+														location.pathname === "/Order"
+															? "text-[#776B5D]"
+															: "text-[#F3EEEA]"
+													}`}
+								/>
+								Order
 							</Link>
 						)}
 						{hasPermission('View Menu') && (

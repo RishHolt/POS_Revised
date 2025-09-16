@@ -141,12 +141,12 @@ const Dashboard: React.FC = () => {
 	const todaySales = salesData.filter(sale => 
 		sale.timestamp.toDateString() === today.toDateString()
 	);
-	
-	const analytics = useMemo(() => generateAnalytics(todaySales), [todaySales]);
-	
+
+	// Fix type mismatch by casting todaySales to Sale[] if needed
+	const analytics = useMemo(() => generateAnalytics(todaySales as Sale[]), [todaySales]);
+
 	// Count active users (for future use)
 	// const activeUsers = usersData.filter(user => user.status === 'active').length;
-	
 	// Check low stock items
 	const lowStockItems = ingredientsList.filter(ingredient => 
 		ingredient.stock <= ingredient.minStock
@@ -350,8 +350,36 @@ const Dashboard: React.FC = () => {
 				</div>
 			</div>
 
+			{/* Low Stock Alerts - Full width */}
+			<div className="bg-white shadow-sm p-6 mb-8 rounded-xl">
+				<h3 className="mb-4 font-semibold text-[#776B5D] text-lg">Low Stock Alerts</h3>
+				{lowStockItems.length > 0 ? (
+					<div className="space-y-3">
+						{lowStockItems.map((item) => (
+							<div key={item.id} className="flex justify-between items-center bg-orange-50 p-3 border border-orange-200 rounded-lg">
+								<div className="flex items-center">
+									<AlertTriangle className="mr-3 w-5 h-5 text-orange-500" />
+									<div>
+										<p className="font-medium text-[#776B5D]">{item.name}</p>
+										<p className="text-[#776B5D]/70 text-sm">{item.stock} {item.unit} remaining</p>
+									</div>
+								</div>
+								<div className="text-right">
+									<p className="font-medium text-orange-600 text-sm">Min: {item.minStock}</p>
+								</div>
+							</div>
+						))}
+					</div>
+				) : (
+					<div className="py-4 text-center">
+						<CheckCircle className="mx-auto mb-2 w-12 h-12 text-green-500" />
+						<p className="text-[#776B5D]/70">All items are well stocked!</p>
+					</div>
+				)}
+			</div>
+
 			{/* Recent Orders - Card Layout */}
-			<div className="bg-white shadow-sm mb-8 p-6 rounded-xl">
+			<div className="bg-white shadow-sm p-6 rounded-xl">
 				<div className="flex justify-between items-center mb-4">
 					<h3 className="font-semibold text-[#776B5D] text-lg">Recent Orders</h3>
 					<button className="font-medium text-[#776B5D] hover:text-[#776B5D]/80 text-sm">View All</button>
@@ -367,7 +395,7 @@ const Dashboard: React.FC = () => {
 								<span className={`px-2 py-1 rounded-full text-xs font-medium ${
 									order.status === 'completed' 
 										? 'bg-green-100 text-green-700'
-										: order.status === 'refunded'
+										: order.status === 'pending'
 										? 'bg-yellow-100 text-yellow-700'
 										: 'bg-red-100 text-red-700'
 								}`}>
@@ -398,34 +426,6 @@ const Dashboard: React.FC = () => {
 						</div>
 					))}
 				</div>
-			</div>
-
-			{/* Low Stock Alerts - Full width */}
-			<div className="bg-white shadow-sm p-6 rounded-xl">
-				<h3 className="mb-4 font-semibold text-[#776B5D] text-lg">Low Stock Alerts</h3>
-				{lowStockItems.length > 0 ? (
-					<div className="space-y-3">
-						{lowStockItems.map((item) => (
-							<div key={item.id} className="flex justify-between items-center bg-orange-50 p-3 border border-orange-200 rounded-lg">
-								<div className="flex items-center">
-									<AlertTriangle className="mr-3 w-5 h-5 text-orange-500" />
-									<div>
-										<p className="font-medium text-[#776B5D]">{item.name}</p>
-										<p className="text-[#776B5D]/70 text-sm">{item.stock} {item.unit} remaining</p>
-									</div>
-								</div>
-								<div className="text-right">
-									<p className="font-medium text-orange-600 text-sm">Min: {item.minStock}</p>
-								</div>
-							</div>
-						))}
-					</div>
-				) : (
-					<div className="py-4 text-center">
-						<CheckCircle className="mx-auto mb-2 w-12 h-12 text-green-500" />
-						<p className="text-[#776B5D]/70">All items are well stocked!</p>
-					</div>
-				)}
 			</div>
 		</div>
 	);

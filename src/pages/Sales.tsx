@@ -32,7 +32,7 @@ type Sale = {
 	items: SaleItem[];
 	total: number;
 	paymentMethod: 'cash' | 'gcash';
-	status: 'completed' | 'refunded' | 'cancelled';
+	status: 'completed' | 'pending' | 'cancelled';
 	timestamp: Date;
 };
 
@@ -466,7 +466,7 @@ const Sales: React.FC = () => {
 										<span className={`px-2 py-1 rounded-full text-xs font-medium ${
 											sale.status === 'completed' 
 												? 'bg-green-100 text-green-700'
-												: sale.status === 'refunded'
+												: sale.status === 'pending'
 												? 'bg-yellow-100 text-yellow-700'
 												: 'bg-red-100 text-red-700'
 										}`}>

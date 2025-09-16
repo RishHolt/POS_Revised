@@ -9,6 +9,7 @@ import Menu from "../pages/Menu";
 import Sales from "../pages/Sales";
 import UserManagement from "../pages/UserManagement";
 import Settings from "../pages/Settings";
+import Order from "../pages/Order";
 
 const Layout: React.FC = () => {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -25,6 +26,8 @@ const Layout: React.FC = () => {
 						<Route path="/Menu" element={<Menu />} />
 						<Route path="/Inventory" element={<Inventory />} />
 						<Route path="/Sales" element={<Sales />} />
+						<Route path="/Order" element={<Order />} />
+						<Route path="/Order/:id" element={<Order />} />
 						<Route path="/UserManagement" element={<UserManagement />} />
 						<Route path="/Settings" element={<Settings />} />
 					</Routes>

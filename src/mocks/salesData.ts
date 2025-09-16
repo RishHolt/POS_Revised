@@ -5,7 +5,7 @@ export interface Sale {
 	items: SaleItem[];
 	total: number;
 	paymentMethod: 'cash' | 'gcash';
-	status: 'completed' | 'refunded' | 'cancelled';
+	status: 'completed' | 'pending' | 'cancelled';
 	timestamp: Date;
 	discount?: number;
 	tax: number;
@@ -94,7 +94,7 @@ export const salesData: Sale[] = [
 		],
 		total: 200,
 		paymentMethod: 'cash',
-		status: 'completed',
+		status: 'cancelled',
 		timestamp: new Date('2025-09-13T09:15:00'), // updated date
 		discount: 10,
 		tax: 18
@@ -123,7 +123,7 @@ export const salesData: Sale[] = [
 		],
 		total: 620,
 		paymentMethod: 'gcash',
-		status: 'completed',
+		status: 'pending',
 		timestamp: new Date('2025-09-12T10:45:00'), // updated date
 		discount: 0,
 		tax: 55.8
@@ -165,7 +165,7 @@ export const salesData: Sale[] = [
 		],
 		total: 210,
 		paymentMethod: 'cash',
-		status: 'refunded',
+		status: 'pending',
 		timestamp: new Date('2025-09-10T12:00:00'), // updated date
 		discount: 0,
 		tax: 18.9
@@ -194,7 +194,7 @@ export const salesData: Sale[] = [
 		],
 		total: 700,
 		paymentMethod: 'gcash',
-		status: 'completed',
+		status: 'pending',
 		timestamp: new Date('2025-09-09T13:30:00'), // updated date
 		discount: 50,
 		tax: 58.5
@@ -215,7 +215,7 @@ export const salesData: Sale[] = [
 		],
 		total: 250,
 		paymentMethod: 'gcash',
-		status: 'completed',
+		status: 'pending',
 		timestamp: new Date('2025-09-08T14:15:00'), // updated date
 		discount: 0,
 		tax: 22.5
