@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Menu, Search, Bell } from "lucide-react";
+import { Search, Bell } from "lucide-react";
+import { getCurrentUser, getUserDisplayName } from "../utils/auth";
 
-interface HeaderProps {
-	onMenuClick?: () => void;
-}
+interface HeaderProps {}
 
-const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
+const Header: React.FC<HeaderProps> = () => {
 	const [date, setDate] = useState("");
 	const [time, setTime] = useState("");
+	const [currentUser, setCurrentUser] = useState(getCurrentUser());
 
 	useEffect(() => {
 		const updateDateTime = () => {
@@ -26,17 +26,17 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
 		return () => clearInterval(interval);
 	}, []);
 
+	useEffect(() => {
+		setCurrentUser(getCurrentUser());
+	}, []);
+
 	return (
 		<header className="flex justify-between items-center bg-[#776B5D] shadow px-6 py-4 w-full">
-			{/* Left: Menu + Brand */}
-			<div className="flex items-center gap-3">
-				<button
-					className="flex justify-center items-center hover:bg-[#B0A695]/20 p-2 rounded-full transition-colors"
-					onClick={onMenuClick}
-				>
-					<Menu className="w-6 h-6 text-[#F3EEEA]" />
-				</button>
-				<span className="ml-1 font-bold text-[#F3EEEA] text-2xl">Coffee Win</span>
+			{/* Left: Welcome */}
+			<div className="flex items-center">
+				<span className="font-bold text-[#F3EEEA] text-2xl">
+					Welcome, {currentUser ? getUserDisplayName() : 'Guest'}!
+				</span>
 			</div>
 			{/* Right: Icons + Info */}
 			<div className="flex items-center gap-3">

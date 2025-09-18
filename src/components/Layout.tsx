@@ -8,6 +8,7 @@ import POS from "../pages/POS";
 import Menu from "../pages/Menu";
 import Sales from "../pages/Sales";
 import UserManagement from "../pages/UserManagement";
+import UserLogs from "../pages/UserLogs";
 import Settings from "../pages/Settings";
 import Order from "../pages/Order";
 
@@ -15,11 +16,17 @@ const Layout: React.FC = () => {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 	const handleToggleSidebar = () => setSidebarOpen((prev) => !prev);
 	return (
-		<div className="flex flex-row w-full h-dvh overflow-hidden">
+		<div className="flex w-full h-dvh overflow-hidden">
 			<Sidebar open={sidebarOpen} onToggle={handleToggleSidebar} />
-			<div className="flex flex-col w-full h-full overflow-hidden">
-				<Header onMenuClick={handleToggleSidebar} />
-				<div className="flex-1 overflow-hidden">
+			<div 
+				className="flex flex-col h-full overflow-hidden transition-all duration-300 ease-in-out"
+				style={{
+					width: sidebarOpen ? 'calc(100% - 18rem)' : 'calc(100% - 4rem)',
+					marginLeft: sidebarOpen ? '18rem' : '4rem'
+				}}
+			>
+				<Header />
+				<div className="flex-1 w-full overflow-hidden">
 					<Routes>
 						<Route path="/dashboard" element={<Dashboard />} />
 						<Route path="/POS" element={<POS />} />
@@ -29,6 +36,7 @@ const Layout: React.FC = () => {
 						<Route path="/Order" element={<Order />} />
 						<Route path="/Order/:id" element={<Order />} />
 						<Route path="/UserManagement" element={<UserManagement />} />
+						<Route path="/UserLogs" element={<UserLogs />} />
 						<Route path="/Settings" element={<Settings />} />
 					</Routes>
 				</div>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { showConfirm } from "../utils/swal";
 import {
-	CircleChevronLeft,
+	ChevronLeft,
+	ChevronRight,
 	LayoutDashboard,
 	ShoppingCart,
 	Utensils,
@@ -11,7 +12,8 @@ import {
 	User,
 	Settings,
 	LogOut,
-	ScrollText
+	ScrollText,
+	Activity
 } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getCurrentUser, getUserDisplayName, getUserRole, clearCurrentUser, hasPermission } from "../utils/auth";
@@ -35,220 +37,171 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onToggle }) => {
 		if (confirmed) {
 			clearCurrentUser();
 			navigate("/");
-			onToggle();
 		}
 	};
-	
-	if (!open) return null;
+
+	const menuItems = [
+		{
+			path: "/dashboard",
+			icon: LayoutDashboard,
+			label: "Dashboard",
+			permission: "View Dashboard"
+		},
+		{
+			path: "/POS",
+			icon: ShoppingCart,
+			label: "POS",
+			permission: "Process Orders"
+		},
+		{
+			path: "/Order",
+			icon: ScrollText,
+			label: "Order",
+			permission: "Manage Order"
+		},
+		{
+			path: "/Menu",
+			icon: Utensils,
+			label: "Menu",
+			permission: "View Menu"
+		},
+		{
+			path: "/Inventory",
+			icon: Package,
+			label: "Inventory",
+			permission: "Manage Inventory"
+		},
+		{
+			path: "/Sales",
+			icon: BarChart,
+			label: "Sales",
+			permission: "View Sales"
+		},
+		{
+			path: "/UserManagement",
+			icon: Users,
+			label: "User Management",
+			permission: "Manage Users"
+		},
+		{
+			path: "/UserLogs",
+			icon: Activity,
+			label: "User Logs",
+			permission: "View Reports"
+		},
+	];
+
 	return (
-		<>
-			<div
-				className="z-10 fixed inset-0 bg-black/50"
-				onClick={onToggle}
-			/>
-			<div className="top-0 left-0 z-20 fixed flex flex-col justify-between bg-[#776B5D] w-72 h-full">
-				<div>
-					<div className="flex justify-between items-center px-6 py-4">
-						<div className="flex items-center gap-2">
-							<h1 className="font-bold text-[#F3EEEA] text-2xl">
-								Coffee Win
-							</h1>
-						</div>
-						<button
-							className="hover:bg-[#B0A695]/20 p-2 rounded-full transition-colors"
-							onClick={onToggle}
-						>
-							<CircleChevronLeft className="w-6 h-6 text-[#F3EEEA]" />
-						</button>
-					</div>
-					<hr className="mx-6 border-[#B0A695]" />
-					<nav className="flex flex-col gap-4 mt-6 px-6">
-						{hasPermission('View Dashboard') && (
-							<Link
-								to="/dashboard"
-								className={`flex items-center gap-3 rounded-xl px-4 py-2 ${
-									location.pathname === "/dashboard"
-										? "bg-[#F3EEEA] text-[#776B5D]"
-										: "bg-[#776B5D] text-[#F3EEEA] border border-[#B0A695]"
-								} transition-colors`}
-							>
-								<LayoutDashboard
-									className={`w-6 h-6 ${
-										location.pathname === "/dashboard"
-											? "text-[#776B5D]"
-											: "text-[#F3EEEA]"
-									}`}
-								/>
-								Dashboard
-							</Link>
+		<div className={`fixed left-0 top-0 h-full bg-[#776B5D] transition-all duration-300 ease-in-out z-30 ${
+			open ? 'w-72' : 'w-17'
+		}`}>
+			<div className="flex flex-col h-full">
+				{/* Header */}
+				<div className="flex items-center justify-between p-4 h-18 border-b border-[#B0A695]/30">
+					{open && (
+						<h1 className="font-bold text-[#F3EEEA] text-xl whitespace-nowrap">
+							Coffee Win
+						</h1>
+					)}
+					<button
+						onClick={onToggle}
+						className="p-2 rounded-lg hover:bg-[#B0A695]/20 transition-colors"
+					>
+						{open ? (
+							<ChevronLeft className="w-5 h-5 text-[#F3EEEA]" />
+						) : (
+							<ChevronRight className="w-5 h-5 text-[#F3EEEA]" />
 						)}
-						{hasPermission('Process Orders') && (
-							<Link
-								to="/POS"
-												className={`flex items-center gap-3 rounded-xl px-4 py-2 ${
-													location.pathname === "/POS"
-														? "bg-[#F3EEEA] text-[#776B5D]"
-														: "bg-[#776B5D] text-[#F3EEEA] border border-[#B0A695]"
-												} transition-colors`}
-							>
-												<ShoppingCart
-													className={`w-6 h-6 ${
-														location.pathname === "/POS"
-															? "text-[#776B5D]"
-															: "text-[#F3EEEA]"
-													}`}
-								/>
-								POS
-							</Link>
-						)}
-						{hasPermission('Manage Order') && (
-							<Link
-								to="/Order"
-												className={`flex items-center gap-3 rounded-xl px-4 py-2 ${
-													location.pathname === "/Order"
-														? "bg-[#F3EEEA] text-[#776B5D]"
-														: "bg-[#776B5D] text-[#F3EEEA] border border-[#B0A695]"
-												} transition-colors`}
-							>
-												<ScrollText
-													className={`w-6 h-6 ${
-														location.pathname === "/Order"
-															? "text-[#776B5D]"
-															: "text-[#F3EEEA]"
-													}`}
-								/>
-								Order
-							</Link>
-						)}
-						{hasPermission('View Menu') && (
-							<Link
-								to="/Menu"
-												className={`flex items-center gap-3 rounded-xl px-4 py-2 ${
-													location.pathname === "/Menu"
-														? "bg-[#F3EEEA] text-[#776B5D]"
-														: "bg-[#776B5D] text-[#F3EEEA] border border-[#B0A695]"
-												} transition-colors`}
-							>
-												<Utensils
-													className={`w-6 h-6 ${
-														location.pathname === "/Menu"
-															? "text-[#776B5D]"
-															: "text-[#F3EEEA]"
-													}`}
-								/>
-								Menu
-							</Link>
-						)}
-						{hasPermission('Manage Inventory') && (
-							<Link
-								to="/Inventory"
-												className={`flex items-center gap-3 rounded-xl px-4 py-2 ${
-													location.pathname === "/Inventory"
-														? "bg-[#F3EEEA] text-[#776B5D]"
-														: "bg-[#776B5D] text-[#F3EEEA] border border-[#B0A695]"
-												} transition-colors`}
-							>
-												<Package
-													className={`w-6 h-6 ${
-														location.pathname === "/Inventory"
-															? "text-[#776B5D]"
-															: "text-[#F3EEEA]"
-													}`}
-								/>
-								Inventory
-							</Link>
-						)}
-						{hasPermission('View Sales') && (
-							<Link
-								to="/Sales"
-												className={`flex items-center gap-3 rounded-xl px-4 py-2 ${
-													location.pathname === "/Sales"
-														? "bg-[#F3EEEA] text-[#776B5D]"
-														: "bg-[#776B5D] text-[#F3EEEA] border border-[#B0A695]"
-												} transition-colors`}
-							>
-												<BarChart
-													className={`w-6 h-6 ${
-														location.pathname === "/Sales"
-															? "text-[#776B5D]"
-															: "text-[#F3EEEA]"
-													}`}
-								/>
-								Sales
-							</Link>
-						)}
-						{hasPermission('Manage Users') && (
-							<Link
-								to="/UserManagement"
-												className={`flex items-center gap-3 rounded-xl px-4 py-2 ${
-													location.pathname === "/UserManagement"
-														? "bg-[#F3EEEA] text-[#776B5D]"
-														: "bg-[#776B5D] text-[#F3EEEA] border border-[#B0A695]"
-												} transition-colors`}
-							>
-												<Users
-													className={`w-6 h-6 ${
-														location.pathname === "/UserManagement"
-															? "text-[#776B5D]"
-															: "text-[#F3EEEA]"
-													}`}
-								/>
-								User Management
-							</Link>
-						)}
-						<Link
-							to="/Settings"
-							className={`flex items-center gap-3 rounded-xl px-4 py-2 ${
-								location.pathname === "/Settings"
-									? "bg-[#F3EEEA] text-[#776B5D]"
-									: "bg-[#776B5D] text-[#F3EEEA] border border-[#B0A695]"
-							} transition-colors`}
-						>
-							<Settings
-								className={`w-6 h-6 ${
-									location.pathname === "/Settings"
-										? "text-[#776B5D]"
-										: "text-[#F3EEEA]"
-								}`}
-							/>
-							Settings
-						</Link>
-					</nav>
+					</button>
 				</div>
-				<div className="px-4 pb-6">
-					<div className="flex flex-col bg-[#F3EEEA] p-4 rounded-xl">
-						<div className="flex items-center gap-3 mb-2">
-							<span className="bg-[#EBE3D5] p-2 rounded-full">
-								<User className="w-6 h-6 text-[#776B5D]" />
-							</span>
-							<div>
-								<div className="font-semibold text-[#776B5D]">
-									{currentUser ? getUserDisplayName() : 'Guest User'}
+
+				{/* Navigation */}
+				<nav className="flex-1 px-3 py-4 space-y-2">
+					{menuItems.map((item) => {
+						if (item.permission && !hasPermission(item.permission)) return null;
+						
+						const isActive = location.pathname === item.path;
+						const Icon = item.icon;
+						
+						return (
+							<Link
+								key={item.path}
+								to={item.path}
+								className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group ${
+									isActive
+										? "bg-[#F3EEEA] text-[#776B5D] shadow-sm"
+										: "text-[#F3EEEA] hover:bg-[#B0A695]/20"
+								}`}
+								title={!open ? item.label : ""}
+							>
+								<Icon className={`w-5 h-5 flex-shrink-0 ${
+									isActive ? "text-[#776B5D]" : "text-[#F3EEEA]"
+								}`} />
+								{open && (
+									<span className="text-sm font-medium whitespace-nowrap">
+										{item.label}
+									</span>
+								)}
+							</Link>
+						);
+					})}
+				</nav>
+
+				{/* User Section */}
+				<div className="p-3 border-t border-[#B0A695]/30">
+					{open ? (
+						<div className="bg-[#F3EEEA] p-3 rounded-lg">
+							<div className="flex items-center gap-3 mb-3">
+								<div className="bg-[#EBE3D5] p-2 rounded-full">
+									<User className="w-5 h-5 text-[#776B5D]" />
 								</div>
-								<div className="text-[#776B5D] text-xs">
-									{currentUser ? getUserRole().charAt(0).toUpperCase() + getUserRole().slice(1) : 'Guest'}
+								<div className="flex-1 min-w-0">
+									<div className="font-semibold text-[#776B5D] text-sm truncate">
+										{currentUser ? getUserDisplayName() : 'Guest User'}
+									</div>
+									<div className="text-[#776B5D]/70 text-xs">
+										{currentUser ? getUserRole().charAt(0).toUpperCase() + getUserRole().slice(1) : 'Guest'}
+									</div>
 								</div>
 							</div>
+							<div className="flex gap-2">
+								<Link
+									to="/Settings"
+									className="flex-1 flex items-center justify-center gap-2 bg-[#776B5D] px-3 py-2 rounded-lg font-medium text-[#F3EEEA] text-xs hover:bg-[#776B5D]/90 transition-colors"
+								>
+									<Settings className="w-4 h-4" />
+									Settings
+								</Link>
+								<button
+									onClick={handleLogout}
+									className="flex-1 flex items-center justify-center gap-2 bg-[#776B5D] px-3 py-2 rounded-lg font-medium text-[#F3EEEA] text-xs hover:bg-[#776B5D]/90 transition-colors"
+								>
+									<LogOut className="w-4 h-4" />
+									Logout
+								</button>
+							</div>
 						</div>
-						<hr className="my-2 border-[#776B5D] w-full" />
-						<div className="flex gap-2 w-full">
+					) : (
+						<div className="flex flex-col gap-2">
 							<Link
 								to="/Settings"
-								className="flex flex-1 items-center gap-2 bg-[#776B5D] px-3 py-2 rounded-lg font-medium text-[#F3EEEA] text-sm hover:bg-[#776B5D]/90 transition-colors"
+								className="flex items-center justify-center p-2 rounded-lg text-[#F3EEEA] hover:bg-[#B0A695]/20 transition-colors"
+								title="Settings"
 							>
-								<Settings className="w-4 h-4" /> Settings
+								<Settings className="w-5 h-5" />
 							</Link>
 							<button
-								className="flex flex-1 items-center gap-2 bg-[#776B5D] px-3 py-2 rounded-lg font-medium text-[#F3EEEA] text-sm hover:bg-[#776B5D]/90 transition-colors"
 								onClick={handleLogout}
+								className="flex items-center justify-center p-2 rounded-lg text-[#F3EEEA] hover:bg-[#B0A695]/20 transition-colors"
+								title="Logout"
 							>
-								<LogOut className="w-4 h-4" /> Logout
+								<LogOut className="w-5 h-5" />
 							</button>
 						</div>
-					</div>
+					)}
 				</div>
 			</div>
-		</>
+		</div>
 	);
 };
 

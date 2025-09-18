@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, LogIn, User, Lock, Coffee } from 'lucide-react';
 import { usersData } from '../mocks/userData';
 import { setCurrentUser, type CurrentUser } from '../utils/auth';
+import Logo from '../assets/logo.svg';
 
 // Mock passwords for demo purposes (in real app, these would be hashed)
 const mockPasswords: Record<string, string> = {
@@ -106,8 +107,7 @@ const Login: React.FC = () => {
         <div className="bg-white shadow-2xl mx-4 p-8 rounded-2xl w-full max-w-md">
           <header className="mb-8 text-center">
             <div className="flex justify-center items-center gap-3 mb-3">
-                <Coffee className="w-8 h-8 text-[#776B5D]" />
-                <h1 className="font-bold text-[#776B5D] text-3xl">Coffee Win</h1>
+                <img src={Logo} alt="Logo" className="w-52 h-fit" />
             </div>
             <p className="text-[#776B5D]/75">Please sign in to continue</p>
           </header>
