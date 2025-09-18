@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, LogIn, User, Lock, Coffee } from 'lucide-react';
+import { Eye, EyeOff, LogIn, User, Lock } from 'lucide-react';
 import { usersData } from '../mocks/userData';
 import { setCurrentUser, type CurrentUser } from '../utils/auth';
 import Logo from '../assets/logo.svg';
