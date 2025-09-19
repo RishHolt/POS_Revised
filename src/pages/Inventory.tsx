@@ -112,7 +112,7 @@ const Inventory: React.FC = () => {
 	);
 
 	return (
-		<div className="bg-[#F3EEEA] p-8 h-full overflow-hidden flex flex-col">
+		<div className="bg-[#F3EEEA] p-4 sm:p-6 lg:p-8 h-full overflow-hidden flex flex-col">
 			<PageHeader
 				title="Inventory Management"
 				description="Track and manage your coffee shop's inventory, ingredients, and supplies"
@@ -120,9 +120,9 @@ const Inventory: React.FC = () => {
 			/>
 
 			{/* Restock Controls - separate section */}
-			<div className="bg-white rounded-xl p-6 mb-6 shadow-sm">
-				<div className="flex flex-wrap items-center gap-4">
-					<span className="font-medium text-[#776B5D]">Restock:</span>
+			<div className="bg-white rounded-xl p-4 sm:p-6 mb-4 sm:mb-6 shadow-sm">
+				<div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-3 sm:gap-4">
+					<span className="font-medium text-[#776B5D] text-sm sm:text-base">Restock:</span>
 					<select
 						value={selectedProduct}
 						onChange={(e) => {
@@ -130,19 +130,19 @@ const Inventory: React.FC = () => {
 							const item = allItems.find(item => item.id === e.target.value);
 							setCurrentStock(item ? `${item.stock} ${item.unit}` : '');
 						}}
-						className="bg-white px-3 py-2 border border-[#B0A695] rounded-lg text-[#776B5D] min-w-[150px]"
+						className="bg-white px-3 py-2 border border-[#B0A695] rounded-lg text-[#776B5D] min-w-[120px] sm:min-w-[150px] text-sm"
 					>
 						<option value="">Select Product</option>
 						{allItems.map(item => (
 							<option key={item.id} value={item.id}>{item.name}</option>
 						))}
 					</select>
-					<span className="font-medium text-[#776B5D]">Current Stock:</span>
+					<span className="font-medium text-[#776B5D] text-sm sm:text-base">Current Stock:</span>
 					<input
 						type="text"
 						value={currentStock}
 						placeholder="Ex: 300 ml"
-						className="px-3 py-2 border border-[#B0A695] rounded-lg text-[#776B5D] min-w-[120px]"
+						className="px-3 py-2 border border-[#B0A695] rounded-lg text-[#776B5D] min-w-[100px] sm:min-w-[120px] text-sm"
 						readOnly
 					/>
 					<input
@@ -150,11 +150,11 @@ const Inventory: React.FC = () => {
 						value={inputStock}
 						onChange={(e) => setInputStock(e.target.value)}
 						placeholder="input stock"
-						className="px-3 py-2 border border-[#B0A695] rounded-lg text-[#776B5D] min-w-[120px]"
+						className="px-3 py-2 border border-[#B0A695] rounded-lg text-[#776B5D] min-w-[100px] sm:min-w-[120px] text-sm"
 					/>
 					<button
 						onClick={handleRestock}
-						className="bg-[#776B5D] hover:bg-[#776B5D]/90 px-4 py-2 rounded-lg font-medium text-[#F3EEEA] transition-colors duration-150"
+						className="bg-[#776B5D] hover:bg-[#776B5D]/90 px-3 sm:px-4 py-2 rounded-lg font-medium text-[#F3EEEA] transition-colors duration-150 text-sm"
 					>
 						Confirm
 					</button>
@@ -162,25 +162,33 @@ const Inventory: React.FC = () => {
 			</div>
 
 			{/* Category Tabs - matching Menu.tsx exactly */}
-			<div className="flex flex-wrap gap-2 md:gap-4 mb-6">
+			<div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6">
 				{lowStockCount > 0 && (
 					<div className="flex justify-center items-center bg-red-500 p-2 rounded-xl">
-						<button className="flex items-center justify-center gap-2 px-4 py-2 rounded-md font-normal transition-colors duration-150 w-full h-full bg-transparent text-white">
-							<AlertTriangle className="w-5 h-5" />
-							<span>Low on stock | {lowStockCount}</span>
+						<button className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2 rounded-md font-normal transition-colors duration-150 w-full h-full bg-transparent text-white text-sm sm:text-base">
+							<AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5" />
+							<span className="hidden sm:inline">Low on stock | {lowStockCount}</span>
+							<span className="sm:hidden">Low Stock ({lowStockCount})</span>
 						</button>
 					</div>
 				)}
 				{categories.map(category => (
-					<div key={category.value} className="flex justify-center items-center bg-white p-2 rounded-xl">
-						<button
-							onClick={() => setFilterCategory(category.value)}
-							className={`flex items-center justify-center gap-2 px-4 py-2 rounded-md font-normal transition-colors duration-150 w-full h-full ${filterCategory === category.value ? "bg-[#776B5D] text-[#F3EEEA]" : "bg-transparent text-[#776B5D]"}`}
-						>
-							{React.createElement(category.icon, { className: "w-5 h-5", color: filterCategory === category.value ? "#F3EEEA" : "#776B5D" })}
-							<span>{category.label}</span>
-						</button>
-					</div>
+					<button
+						key={category.value}
+						onClick={() => setFilterCategory(category.value)}
+						className={`flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg font-normal transition-colors duration-150 text-sm sm:text-base whitespace-nowrap ${
+							filterCategory === category.value 
+								? "bg-[#776B5D] text-[#F3EEEA] shadow-sm" 
+								: "bg-white text-[#776B5D] hover:bg-[#B0A695]/10 border border-[#B0A695]/20"
+						}`}
+					>
+						{React.createElement(category.icon, { 
+							className: "w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0", 
+							color: filterCategory === category.value ? "#F3EEEA" : "#776B5D" 
+						})}
+						<span className="hidden sm:inline">{category.label}</span>
+						<span className="sm:hidden">{category.label.split(' ')[0]}</span>
+					</button>
 				))}
 			</div>
 

@@ -194,9 +194,9 @@ const AddInventoryModal: React.FC<AddInventoryModalProps> = ({ isOpen, onClose, 
 			size="xl"
 			footer={footer}
 		>
-			<form onSubmit={handleSubmit} className="space-y-6">
+			<form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
 				{/* Two Column Layout */}
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
 					{/* Left Column */}
 					<div className="space-y-4">
 						{/* Product Name */}

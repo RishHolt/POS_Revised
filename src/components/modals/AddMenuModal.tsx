@@ -140,17 +140,18 @@ const AddMenuModal: React.FC<AddMenuModalProps> = ({ open, onClose, onNext }) =>
             size="lg"
             footer={footer}
         >
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
                     {/* Image Upload */}
                     <div className="flex justify-center items-center">
-                        <label htmlFor="image-upload" className="w-40 h-40 cursor-pointer">
+                        <label htmlFor="image-upload" className="w-32 h-32 sm:w-40 sm:h-40 cursor-pointer">
                             <div className="flex flex-col justify-center items-center hover:bg-[#B0A695]/10 border-[#B0A695] border-2 hover:border-[#776B5D] border-dashed rounded-full w-full h-full text-[#776B5D]/60 transition-colors">
                                 {imagePreview ? (
                                     <img src={imagePreview} alt="Menu item" className="rounded-full w-full h-full object-cover" />
                                 ) : (
                                     <>
-                                        <UploadCloud size={40} />
-                                        <span className="mt-2 text-sm text-center">Upload Image</span>
+                                        <UploadCloud size={32} className="sm:hidden" />
+                                        <UploadCloud size={40} className="hidden sm:block" />
+                                        <span className="mt-1 sm:mt-2 text-xs sm:text-sm text-center">Upload Image</span>
                                     </>
                                 )}
                             </div>
@@ -159,7 +160,7 @@ const AddMenuModal: React.FC<AddMenuModalProps> = ({ open, onClose, onNext }) =>
                     </div>
 
                 {/* Name & Category */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                     <FormField label="Name" required>
                         <Input 
                             type="text" 
@@ -211,7 +212,7 @@ const AddMenuModal: React.FC<AddMenuModalProps> = ({ open, onClose, onNext }) =>
                         <h3 className="mb-2 font-semibold text-[#776B5D] text-lg">Cups & Pricing</h3>
                         {sizes.small && (
                             <SizeSection title="Small">
-                                <div className="gap-4 grid grid-cols-2">
+                                <div className="gap-3 sm:gap-4 grid grid-cols-1 sm:grid-cols-2">
                                     <select 
                                         value={smallCup.cupId} 
                                         onChange={(e) => setSmallCup(prev => ({ ...prev, cupId: e.target.value }))} 
@@ -232,7 +233,7 @@ const AddMenuModal: React.FC<AddMenuModalProps> = ({ open, onClose, onNext }) =>
                         )}
                          {sizes.medium && (
                             <SizeSection title="Medium">
-                                <div className="gap-4 grid grid-cols-2">
+                                <div className="gap-3 sm:gap-4 grid grid-cols-1 sm:grid-cols-2">
                                     <select 
                                         value={mediumCup.cupId} 
                                         onChange={(e) => setMediumCup(prev => ({...prev, cupId: e.target.value}))} 
@@ -253,7 +254,7 @@ const AddMenuModal: React.FC<AddMenuModalProps> = ({ open, onClose, onNext }) =>
                         )}
                          {sizes.large && (
                             <SizeSection title="Large">
-                                <div className="gap-4 grid grid-cols-2">
+                                <div className="gap-3 sm:gap-4 grid grid-cols-1 sm:grid-cols-2">
                                     <select 
                                         value={largeCup.cupId} 
                                         onChange={(e) => setLargeCup(prev => ({...prev, cupId: e.target.value}))} 
@@ -280,7 +281,7 @@ const AddMenuModal: React.FC<AddMenuModalProps> = ({ open, onClose, onNext }) =>
                         {sizes.small && (
                             <SizeSection title="Small">
                                 {smallIngredients.map((ing, index) => (
-                                    <div key={ing.id} className="gap-4 grid grid-cols-2 mb-2">
+                                    <div key={ing.id} className="gap-3 sm:gap-4 grid grid-cols-1 sm:grid-cols-2 mb-2">
                                         <select 
                                             value={ing.ingredientId} 
                                             onChange={(e) => handleIngredientChange('small', index, 'ingredientId', e.target.value)} 
@@ -306,7 +307,7 @@ const AddMenuModal: React.FC<AddMenuModalProps> = ({ open, onClose, onNext }) =>
                         {sizes.medium && (
                             <SizeSection title="Medium">
                                 {mediumIngredients.map((ing, index) => (
-                                    <div key={ing.id} className="gap-4 grid grid-cols-2 mb-2">
+                                    <div key={ing.id} className="gap-3 sm:gap-4 grid grid-cols-1 sm:grid-cols-2 mb-2">
                                         <select 
                                             value={ing.ingredientId} 
                                             onChange={(e) => handleIngredientChange('medium', index, 'ingredientId', e.target.value)} 
@@ -332,7 +333,7 @@ const AddMenuModal: React.FC<AddMenuModalProps> = ({ open, onClose, onNext }) =>
                          {sizes.large && (
                             <SizeSection title="Large">
                                {largeIngredients.map((ing, index) => (
-                                    <div key={ing.id} className="gap-4 grid grid-cols-2 mb-2">
+                                    <div key={ing.id} className="gap-3 sm:gap-4 grid grid-cols-1 sm:grid-cols-2 mb-2">
                                         <select 
                                             value={ing.ingredientId} 
                                             onChange={(e) => handleIngredientChange('large', index, 'ingredientId', e.target.value)} 

@@ -110,7 +110,7 @@ const UserManagement: React.FC = () => {
 			<select
 				value={roleFilter}
 				onChange={(e) => setRoleFilter(e.target.value)}
-				className="px-4 py-2 border border-[#B0A695] focus:border-transparent rounded-lg focus:ring-[#776B5D] focus:ring-2"
+				className="px-3 sm:px-4 py-2 border border-[#B0A695] focus:border-transparent rounded-lg focus:ring-[#776B5D] focus:ring-2 text-sm"
 			>
 				<option value="all">All Roles</option>
 				{userRoles.map(role => (
@@ -123,7 +123,7 @@ const UserManagement: React.FC = () => {
 			<select
 				value={statusFilter}
 				onChange={(e) => setStatusFilter(e.target.value)}
-				className="px-4 py-2 border border-[#B0A695] focus:border-transparent rounded-lg focus:ring-[#776B5D] focus:ring-2"
+				className="px-3 sm:px-4 py-2 border border-[#B0A695] focus:border-transparent rounded-lg focus:ring-[#776B5D] focus:ring-2 text-sm"
 			>
 				<option value="all">All Status</option>
 				<option value="active">Active</option>
@@ -133,7 +133,7 @@ const UserManagement: React.FC = () => {
 	);
 
 	return (
-		<div className="bg-[#F3EEEA] p-8 h-full overflow-y-auto custom-scrollbar">
+		<div className="bg-[#F3EEEA] p-4 sm:p-6 lg:p-8 h-full overflow-y-auto custom-scrollbar">
 			<PageHeader
 				title="User Management"
 				description="Manage users, roles, and permissions for your coffee shop"
@@ -141,57 +141,57 @@ const UserManagement: React.FC = () => {
 			/>
 
 			{/* Stats Cards */}
-			<div className="gap-6 grid grid-cols-1 md:grid-cols-4 mb-8">
-				<div className="bg-white shadow-sm p-6 rounded-xl">
+			<div className="gap-4 sm:gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-6 sm:mb-8">
+				<div className="bg-white shadow-sm p-4 sm:p-6 rounded-xl">
 					<div className="flex justify-between items-center">
-						<div>
+						<div className="flex-1 min-w-0">
 							<p className="font-medium text-[#776B5D]/70 text-sm">Total Users</p>
-							<p className="font-bold text-[#776B5D] text-2xl">{users.length}</p>
+							<p className="font-bold text-[#776B5D] text-xl sm:text-2xl">{users.length}</p>
 						</div>
-						<div className="bg-blue-100 p-3 rounded-full">
-							<Users className="w-6 h-6 text-blue-600" />
+						<div className="bg-blue-100 p-2 sm:p-3 rounded-full flex-shrink-0">
+							<Users className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
 						</div>
 					</div>
 				</div>
 
-				<div className="bg-white shadow-sm p-6 rounded-xl">
+				<div className="bg-white shadow-sm p-4 sm:p-6 rounded-xl">
 					<div className="flex justify-between items-center">
-						<div>
+						<div className="flex-1 min-w-0">
 							<p className="font-medium text-[#776B5D]/70 text-sm">Active Users</p>
-							<p className="font-bold text-[#776B5D] text-2xl">
+							<p className="font-bold text-[#776B5D] text-xl sm:text-2xl">
 								{users.filter(u => u.status === 'active').length}
 							</p>
 						</div>
-						<div className="bg-green-100 p-3 rounded-full">
-							<UserCheck className="w-6 h-6 text-green-600" />
+						<div className="bg-green-100 p-2 sm:p-3 rounded-full flex-shrink-0">
+							<UserCheck className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
 						</div>
 					</div>
 				</div>
 
-				<div className="bg-white shadow-sm p-6 rounded-xl">
+				<div className="bg-white shadow-sm p-4 sm:p-6 rounded-xl">
 					<div className="flex justify-between items-center">
-						<div>
+						<div className="flex-1 min-w-0">
 							<p className="font-medium text-[#776B5D]/70 text-sm">Admins</p>
-							<p className="font-bold text-[#776B5D] text-2xl">
+							<p className="font-bold text-[#776B5D] text-xl sm:text-2xl">
 								{users.filter(u => u.role === 'admin').length}
 							</p>
 						</div>
-						<div className="bg-red-100 p-3 rounded-full">
-							<Shield className="w-6 h-6 text-red-600" />
+						<div className="bg-red-100 p-2 sm:p-3 rounded-full flex-shrink-0">
+							<Shield className="w-5 h-5 sm:w-6 sm:h-6 text-red-600" />
 						</div>
 					</div>
 				</div>
 
-				<div className="bg-white shadow-sm p-6 rounded-xl">
+				<div className="bg-white shadow-sm p-4 sm:p-6 rounded-xl">
 					<div className="flex justify-between items-center">
-						<div>
+						<div className="flex-1 min-w-0">
 							<p className="font-medium text-[#776B5D]/70 text-sm">Staff</p>
-							<p className="font-bold text-[#776B5D] text-2xl">
+							<p className="font-bold text-[#776B5D] text-xl sm:text-2xl">
 								{users.filter(u => u.role !== 'admin').length}
 							</p>
 						</div>
-						<div className="bg-purple-100 p-3 rounded-full">
-							<Users className="w-6 h-6 text-purple-600" />
+						<div className="bg-purple-100 p-2 sm:p-3 rounded-full flex-shrink-0">
+							<Users className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
 						</div>
 					</div>
 				</div>

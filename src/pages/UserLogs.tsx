@@ -100,7 +100,7 @@ const UserLogs: React.FC = () => {
 	const warningLogs = userLogsData.filter(log => log.status === 'warning').length;
 
 	return (
-		<div className="bg-[#F3EEEA] p-8 h-full overflow-y-auto custom-scrollbar">
+		<div className="bg-[#F3EEEA] p-4 sm:p-6 lg:p-8 h-full overflow-y-auto custom-scrollbar">
 			<PageHeader
 				title="User Logs"
 				description="Monitor user activities and system events across your coffee shop"
@@ -117,51 +117,51 @@ const UserLogs: React.FC = () => {
 			/>
 
 			{/* Stats Cards */}
-			<div className="gap-6 grid grid-cols-1 md:grid-cols-4 mb-8">
-				<div className="bg-white shadow-sm p-6 rounded-xl">
+			<div className="gap-4 sm:gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-6 sm:mb-8">
+				<div className="bg-white shadow-sm p-4 sm:p-6 rounded-xl">
 					<div className="flex justify-between items-center">
-						<div>
+						<div className="flex-1 min-w-0">
 							<p className="font-medium text-[#776B5D]/70 text-sm">Total Logs</p>
-							<p className="font-bold text-[#776B5D] text-2xl">{totalLogs}</p>
+							<p className="font-bold text-[#776B5D] text-xl sm:text-2xl">{totalLogs}</p>
 						</div>
-						<div className="bg-blue-100 p-3 rounded-full">
-							<Activity className="w-6 h-6 text-blue-600" />
+						<div className="bg-blue-100 p-2 sm:p-3 rounded-full flex-shrink-0">
+							<Activity className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
 						</div>
 					</div>
 				</div>
 
-				<div className="bg-white shadow-sm p-6 rounded-xl">
+				<div className="bg-white shadow-sm p-4 sm:p-6 rounded-xl">
 					<div className="flex justify-between items-center">
-						<div>
+						<div className="flex-1 min-w-0">
 							<p className="font-medium text-[#776B5D]/70 text-sm">Successful</p>
-							<p className="font-bold text-[#776B5D] text-2xl">{successLogs}</p>
+							<p className="font-bold text-[#776B5D] text-xl sm:text-2xl">{successLogs}</p>
 						</div>
-						<div className="bg-green-100 p-3 rounded-full">
-							<CheckCircle className="w-6 h-6 text-green-600" />
+						<div className="bg-green-100 p-2 sm:p-3 rounded-full flex-shrink-0">
+							<CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
 						</div>
 					</div>
 				</div>
 
-				<div className="bg-white shadow-sm p-6 rounded-xl">
+				<div className="bg-white shadow-sm p-4 sm:p-6 rounded-xl">
 					<div className="flex justify-between items-center">
-						<div>
+						<div className="flex-1 min-w-0">
 							<p className="font-medium text-[#776B5D]/70 text-sm">Failed</p>
-							<p className="font-bold text-[#776B5D] text-2xl">{failedLogs}</p>
+							<p className="font-bold text-[#776B5D] text-xl sm:text-2xl">{failedLogs}</p>
 						</div>
-						<div className="bg-red-100 p-3 rounded-full">
-							<XCircle className="w-6 h-6 text-red-600" />
+						<div className="bg-red-100 p-2 sm:p-3 rounded-full flex-shrink-0">
+							<XCircle className="w-5 h-5 sm:w-6 sm:h-6 text-red-600" />
 						</div>
 					</div>
 				</div>
 
-				<div className="bg-white shadow-sm p-6 rounded-xl">
+				<div className="bg-white shadow-sm p-4 sm:p-6 rounded-xl">
 					<div className="flex justify-between items-center">
-						<div>
+						<div className="flex-1 min-w-0">
 							<p className="font-medium text-[#776B5D]/70 text-sm">Warnings</p>
-							<p className="font-bold text-[#776B5D] text-2xl">{warningLogs}</p>
+							<p className="font-bold text-[#776B5D] text-xl sm:text-2xl">{warningLogs}</p>
 						</div>
-						<div className="bg-yellow-100 p-3 rounded-full">
-							<AlertTriangle className="w-6 h-6 text-yellow-600" />
+						<div className="bg-yellow-100 p-2 sm:p-3 rounded-full flex-shrink-0">
+							<AlertTriangle className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-600" />
 						</div>
 					</div>
 				</div>
@@ -250,7 +250,7 @@ const UserLogs: React.FC = () => {
 								<span className="font-medium text-[#776B5D]">{log.action}</span>
 							</TableCell>
 							<TableCell>
-								<p className="text-[#776B5D] max-w-xs truncate">{log.description}</p>
+								<p className="text-[#776B5D] max-w-xs	 truncate">{log.description}</p>
 							</TableCell>
 							<TableCell>
 								<span className={`px-2 py-1 rounded-full text-xs font-medium ${getLogCategoryInfo(log.category).color}`}>

@@ -128,7 +128,7 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSave, editingU
 			size="md"
 			footer={footer}
 		>
-			<form onSubmit={handleSubmit} className="space-y-4">
+			<form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
 				<FormField label="Username" required error={errors.username}>
 					<Input
 						type="text"
@@ -140,7 +140,7 @@ const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSave, editingU
 					/>
 				</FormField>
 
-				<div className="grid grid-cols-2 gap-4">
+				<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 					<FormField label="First Name" required error={errors.firstName}>
 						<Input
 							type="text"

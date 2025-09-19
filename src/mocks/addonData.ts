@@ -1,4 +1,3 @@
-
 export interface AddonItem {
 	id: string;
 	name: string;

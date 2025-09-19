@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import MenuModal from "../components/modals/MenuModal"; // Assuming MenuModal accepts an onAddToOrder prop
-import { Star, Trash2, ShoppingCart, CreditCard } from "lucide-react";
+import { Star, Trash2, ShoppingCart, CreditCard, ChevronUp, ChevronDown } from "lucide-react";
 import { menuData, Category } from "../mocks/menuData";
 import { addonData } from "../mocks/addonData";
 import type { MenuItem, OrderItem } from "../mocks/menuData"; // type-only import for MenuItem and OrderItem
@@ -23,6 +23,8 @@ const POS: React.FC = () => {
     const [justAddedId, setJustAddedId] = useState<string | null>(null);
     // --- NEW: State for payment flow ---
     const [showPayment, setShowPayment] = useState(false);
+    // --- NEW: State for mobile order toggle ---
+    const [isOrderExpanded, setIsOrderExpanded] = useState(false);
 
 
     const filteredMenu = menuData.filter(item => {
@@ -95,6 +97,8 @@ const POS: React.FC = () => {
         });
         setJustAddedId(itemToAdd.menu_id);
         setTimeout(() => setJustAddedId(null), 500);
+        // Auto-expand order on mobile when items are added
+        setIsOrderExpanded(true);
         handleCloseModal();
     };
     
@@ -147,27 +151,34 @@ const POS: React.FC = () => {
     }
 
     return (
-        <div className="flex lg:flex-row flex-col bg-[#F3EEEA] w-full h-full overflow-hidden">
+        <div className="flex flex-col lg:flex-row bg-[#F3EEEA] w-full h-full overflow-hidden">
             
             {/* Left: Cafe Menu */}
-            <div className="flex flex-col flex-1 p-4 lg:p-8 min-h-0">
+            <div className={`flex flex-col flex-1 p-3 sm:p-4 lg:p-8 min-h-0 overflow-hidden custom-scrollbar ${isOrderExpanded ? 'lg:flex-1' : 'flex-1'}`}>
                 <PageHeader
                     title="Point of Sale"
                     description="Process orders and manage your coffee shop transactions"
                 />
 
-                {/* Category buttons - matching Menu.tsx exactly */}
-                <div className="flex flex-wrap gap-2 md:gap-4 mb-6">
+                {/* Category buttons - responsive filter buttons */}
+                <div className="flex flex-wrap gap-2 sm:gap-3 mb-4 sm:mb-6">
                     {Category.map(c => (
-                        <div key={c.value} className="flex justify-center items-center bg-white p-2 rounded-xl">
-                            <button
-                                className={`flex items-center justify-center gap-2 px-4 py-2 rounded-md font-normal transition-colors duration-150 w-full h-full ${activeFilter === c.value ? "bg-[#776B5D] text-[#F3EEEA]" : "bg-transparent text-[#776B5D]"}`}
-                                onClick={() => setActiveFilter(c.value)}
-                            >
-                                {React.createElement(c.icon, { className: "w-5 h-5", color: activeFilter === c.value ? "#F3EEEA" : "#776B5D" })}
-                                <span>{c.label}</span>
-                            </button>
-                        </div>
+                        <button
+                            key={c.value}
+                            className={`flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg font-normal transition-colors duration-150 text-sm sm:text-base whitespace-nowrap ${
+                                activeFilter === c.value 
+                                    ? "bg-[#776B5D] text-[#F3EEEA] shadow-sm" 
+                                    : "bg-white text-[#776B5D] hover:bg-[#B0A695]/10 border border-[#B0A695]/20"
+                            }`}
+                            onClick={() => setActiveFilter(c.value)}
+                        >
+                            {React.createElement(c.icon, { 
+                                className: "w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0", 
+                                color: activeFilter === c.value ? "#F3EEEA" : "#776B5D" 
+                            })}
+                            <span className="hidden sm:inline">{c.label}</span>
+                            <span className="sm:hidden">{c.label.split(' ')[0]}</span>
+                        </button>
                     ))}
                 </div>
 
@@ -186,8 +197,8 @@ const POS: React.FC = () => {
                 />
 
                 {/* Menu cards grid - matching Menu.tsx card structure exactly */}
-                <div className="flex pr-4 h-full overflow-y-auto custom-scrollbar">
-                    <div className="gap-6 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 w-full">
+                <div className="flex pr-2 sm:pr-4 h-full custom-scrollbar overflow-y-scroll">
+                    <div className="gap-3 sm:gap-4 lg:gap-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 w-full">
                         {filteredMenu.map(item => (
                             <div
                                 key={item.menu_id}
@@ -195,14 +206,14 @@ const POS: React.FC = () => {
                                 onClick={() => handleMenuClick(item)}
                             >
                                 <div className="relative w-full">
-                                    <img src={item.image} alt={item.name} className="mb-3 rounded-lg w-full object-cover aspect-square" />
+                                    <img src={item.image} alt={item.name} className="mb-2 sm:mb-3 rounded-lg w-full object-cover aspect-square" />
                                 </div>
-                                <div className="mb-4 w-full font-bold text-[#776B5D] text-xl truncate">{item.name}</div>
-                                <div className={`mb-2 text-sm capitalize font-medium ${item.type === 'hot' ? 'text-red-500' : item.type === 'cold' ? 'text-blue-500' : 'text-[#776B5D]/70'}`}>{item.type.replace('-', ' ')}</div>
-                                <div className="flex flex-wrap gap-2 mb-3 font-medium text-sm">
-                                    {item.small_price && (<span className="bg-[#B0A695]/20 px-2 py-1 rounded-lg text-[#776B5D]">S {formatPrice(item.small_price)}</span>)}
-                                    {item.medium_price && (<span className="bg-[#B0A695]/20 px-2 py-1 rounded-lg text-[#776B5D]">M {formatPrice(item.medium_price)}</span>)}
-                                    {item.large_price && (<span className="bg-[#B0A695]/20 px-2 py-1 rounded-lg text-[#776B5D]">L {formatPrice(item.large_price)}</span>)}
+                                <div className="mb-2 sm:mb-4 w-full font-bold text-[#776B5D] text-base sm:text-xl truncate">{item.name}</div>
+                                <div className={`mb-2 text-xs sm:text-sm capitalize font-medium ${item.type === 'hot' ? 'text-red-500' : item.type === 'cold' ? 'text-blue-500' : 'text-[#776B5D]/70'}`}>{item.type.replace('-', ' ')}</div>
+                                <div className="flex flex-wrap gap-1 sm:gap-2 mb-2 sm:mb-3 font-medium text-xs sm:text-sm">
+                                    {item.small_price && (<span className="bg-[#B0A695]/20 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-lg text-[#776B5D]">S {formatPrice(item.small_price)}</span>)}
+                                    {item.medium_price && (<span className="bg-[#B0A695]/20 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-lg text-[#776B5D]">M {formatPrice(item.medium_price)}</span>)}
+                                    {item.large_price && (<span className="bg-[#B0A695]/20 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-lg text-[#776B5D]">L {formatPrice(item.large_price)}</span>)}
                                 </div>
                                 <div className="flex justify-between mt-auto w-full">
                                     <div className={`font-medium text-sm ${item.status === 'available' ? 'text-green-600' : 'text-red-500'}`}>{item.status.charAt(0).toUpperCase() + item.status.slice(1)}</div>
@@ -213,23 +224,35 @@ const POS: React.FC = () => {
                 </div>
             </div>
 
+            {/* Mobile Toggle Button - Only visible on mobile */}
+            <div className="lg:hidden flex justify-center p-3 bg-white border-t border-[#B0A695] shadow-lg">
+                <button
+                    onClick={() => setIsOrderExpanded(!isOrderExpanded)}
+                    className="flex items-center gap-2 px-6 py-3 bg-[#776B5D] text-white rounded-xl font-medium transition-all duration-200 hover:bg-[#776B5D]/90 shadow-md hover:shadow-lg"
+                >
+                    <ShoppingCart className="w-5 h-5" />
+                    <span className="text-base">Current Order ({orderItems.length})</span>
+                    {isOrderExpanded ? <ChevronDown className="w-5 h-5" /> : <ChevronUp className="w-5 h-5" />}
+                </button>
+            </div>
+
             {/* Right: Current Order - FIXED LAYOUT */}
-            <div className="flex flex-col bg-white shadow-lg border-[#B0A695] border-t lg:border-t-0 lg:border-l w-full lg:w-[400px] h-full">
+            <div className={`flex flex-col bg-white shadow-lg border-[#B0A695] border-t lg:border-t-0 lg:border-l w-full lg:w-[400px] ${isOrderExpanded ? 'h-2/3' : 'h-0'} md:h-full transition-all duration-300 ease-in-out overflow-hidden`}>
                 {/* Header */}
-                <div className="flex flex-shrink-0 justify-between items-center p-6 pb-4">
-                    <h2 className="font-bold text-[#776B5D] text-xl">Current Order</h2>
-                    <button onClick={handleResetOrder} className="bg-[#B0A695]/20 hover:bg-red-100 px-3 py-1 rounded-lg font-medium text-[#776B5D] hover:text-red-600 transition">Reset</button>
+                <div className="flex flex-shrink-0 justify-between items-center p-4 sm:p-6 pb-3 sm:pb-4">
+                    <h2 className="font-bold text-[#776B5D] text-lg sm:text-xl">Current Order</h2>
+                    <button onClick={handleResetOrder} className="bg-[#B0A695]/20 hover:bg-red-100 px-2 sm:px-3 py-1 rounded-lg font-medium text-[#776B5D] hover:text-red-600 transition text-sm">Reset</button>
                 </div>
-                <hr className="flex-shrink-0 mx-6 border-[#B0A695]" />
+                <hr className="flex-shrink-0 mx-4 sm:mx-6 border-[#B0A695]" />
                 
                 {/* Order List - Scrollable Content with proper height calculation */}
-                <div className="flex flex-col px-6 py-4 h-full overflow-y-auto custom-scrollbar">
+                <div className="flex flex-col px-4 sm:px-6 py-3 sm:py-4 h-full overflow-y-auto custom-scrollbar">
                     {orderItems.length === 0 ? (
                         // Empty State
                         <div className="flex flex-col justify-center items-center w-full h-full text-[#776B5D]/60 text-center">
-                            <ShoppingCart className="mb-4 w-16 h-16" />
-                            <h3 className="font-bold text-lg">Your cart is empty</h3>
-                            <p className="text-sm">Click on a menu item to get started.</p>
+                            <ShoppingCart className="mb-3 sm:mb-4 w-12 h-12 sm:w-16 sm:h-16" />
+                            <h3 className="font-bold text-base sm:text-lg">Your cart is empty</h3>
+                            <p className="text-xs sm:text-sm">Click on a menu item to get started.</p>
                         </div>
                     ) : (
                         orderItems.map(item => {
@@ -244,13 +267,13 @@ const POS: React.FC = () => {
                             const itemTotal = ((basePrice ?? 0) + addonsTotal) * item.quantity;
 
                             return (
-                                <div key={item.orderId} className="flex bg-[#F3EEEA] mb-3 p-4 border border-[#B0A695] rounded-2xl w-full h-fit">
-                                    <img src={item.image} alt={item.name} className="flex-shrink-0 mr-4 rounded-lg w-16 h-16 object-cover" />
+                                <div key={item.orderId} className="flex bg-[#F3EEEA] mb-2 sm:mb-3 p-3 sm:p-4 border border-[#B0A695] rounded-2xl w-full h-fit">
+                                    <img src={item.image} alt={item.name} className="flex-shrink-0 mr-3 sm:mr-4 rounded-lg w-12 h-12 sm:w-16 sm:h-16 object-cover" />
                                     <div className="flex-1 min-w-0">
                                         <div className="mb-2">
-                                            <div className="overflow-hidden font-bold text-[#776B5D] text-lg text-ellipsis whitespace-nowrap">{item.name}</div>
-                                            <div className="text-[#776B5D] text-sm capitalize">{item.type.replace('-', ' ')}</div>
-                                            <div className="text-[#776B5D] text-sm">Size: {item.selectedSize ? item.selectedSize.charAt(0).toUpperCase() + item.selectedSize.slice(1) : 'Medium'}</div>
+                                            <div className="overflow-hidden font-bold text-[#776B5D] text-sm sm:text-lg text-ellipsis whitespace-nowrap">{item.name}</div>
+                                            <div className="text-[#776B5D] text-xs sm:text-sm capitalize">{item.type.replace('-', ' ')}</div>
+                                            <div className="text-[#776B5D] text-xs sm:text-sm">Size: {item.selectedSize ? item.selectedSize.charAt(0).toUpperCase() + item.selectedSize.slice(1) : 'Medium'}</div>
                                             {item.selectedAddons && item.selectedAddons.length > 0 && (
                                                 <div className="flex flex-col gap-1 mt-2">
                                                     {item.selectedAddons.map(addonName => {
@@ -266,8 +289,8 @@ const POS: React.FC = () => {
                                             )}
                                         </div>
                                         <div className="flex justify-between items-center">
-                                            <div className="text-[#776B5D] text-sm">{item.quantity}x</div>
-                                            <div className="font-bold text-[#776B5D] text-lg">{formatPrice(itemTotal)}</div>
+                                            <div className="text-[#776B5D] text-xs sm:text-sm">{item.quantity}x</div>
+                                            <div className="font-bold text-[#776B5D] text-sm sm:text-lg">{formatPrice(itemTotal)}</div>
                                         </div>
                                     </div>
                                     <div className="flex flex-col justify-between items-end ml-3">
@@ -287,21 +310,22 @@ const POS: React.FC = () => {
                 
                 {/* Sticky Footer - Checkout Section - FIXED */}
                 {orderItems.length > 0 && (
-                    <div className="flex flex-col bg-white p-4 lg:p-6 border-[#B0A695]/20 border-t w-full h-fit">
-                        <div className="flex justify-between mb-2 text-[#776B5D]">
+                    <div className="flex flex-col bg-white p-3 sm:p-4 lg:p-6 border-[#B0A695]/20 border-t w-full h-fit">
+                        <div className="flex justify-between mb-2 text-[#776B5D] text-sm">
                             <span>Discount</span>
                             <span>N/A</span>
                         </div>
-                        <div className="flex justify-between mb-4 font-bold text-[#776B5D] text-lg">
+                        <div className="flex justify-between mb-3 sm:mb-4 font-bold text-[#776B5D] text-base sm:text-lg">
                             <span>Total</span>
                             <span>{formatPrice(orderTotal)}</span>
                         </div>
                         <button 
                             onClick={handleProceedToPayment}
-                            className="bg-[#776B5D] hover:bg-[#776B5D]/90 py-3 rounded-lg w-full font-bold text-[#F3EEEA] text-lg transition-colors duration-150 flex items-center justify-center"
+                            className="bg-[#776B5D] hover:bg-[#776B5D]/90 py-2 sm:py-3 rounded-lg w-full font-bold text-[#F3EEEA] text-sm sm:text-lg transition-colors duration-150 flex items-center justify-center"
                         >
-                            <CreditCard className="w-5 h-5 mr-2" />
-                            Proceed to Payment - {formatPrice(orderTotal)}
+                            <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                            <span className="hidden sm:inline">Proceed to Payment - {formatPrice(orderTotal)}</span>
+                            <span className="sm:hidden">Pay {formatPrice(orderTotal)}</span>
                         </button>
                     </div>
                 )}

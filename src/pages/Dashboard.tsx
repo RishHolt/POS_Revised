@@ -170,24 +170,24 @@ const Dashboard: React.FC = () => {
 	
 
 	return (
-		<div className="bg-[#F3EEEA] p-8 h-full overflow-y-auto custom-scrollbar">
+		<div className="bg-[#F3EEEA] p-4 sm:p-6 lg:p-8 h-full overflow-y-auto custom-scrollbar">
 			<PageHeader
 				title="Dashboard"
 				description="Here's what's happening with your coffee shop today."
 				actions={actions}
 			/>
 
-			{/* Key Metrics Cards - Consistent with other pages */}
-			<div className="gap-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mb-8">
+			{/* Key Metrics Cards - Responsive grid */}
+			<div className="gap-4 sm:gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-6 sm:mb-8">
 				{/* Total Sales */}
-				<div className="bg-white shadow-sm p-6 rounded-xl">
+				<div className="bg-white shadow-sm p-4 sm:p-6 rounded-xl">
 					<div className="flex justify-between items-start mb-4">
-						<div>
+						<div className="flex-1 min-w-0">
 							<p className="mb-1 font-medium text-[#776B5D]/70 text-sm">Total Sales</p>
-							<p className="font-bold text-[#776B5D] text-3xl">{formatCurrency(analytics.totalRevenue)}</p>
+							<p className="font-bold text-[#776B5D] text-2xl sm:text-3xl truncate">{formatCurrency(analytics.totalRevenue)}</p>
 						</div>
-						<div className="bg-green-100 p-3 rounded-full">
-							<DollarSign className="w-6 h-6 text-green-600" />
+						<div className="bg-green-100 p-2 sm:p-3 rounded-full flex-shrink-0">
+							<DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
 						</div>
 					</div>
 					<div className="space-y-2">
@@ -206,14 +206,14 @@ const Dashboard: React.FC = () => {
 				</div>
 
 				{/* Total Orders */}
-				<div className="bg-white shadow-sm p-6 rounded-xl">
+				<div className="bg-white shadow-sm p-4 sm:p-6 rounded-xl">
 					<div className="flex justify-between items-start mb-4">
-						<div>
+						<div className="flex-1 min-w-0">
 							<p className="mb-1 font-medium text-[#776B5D]/70 text-sm">Total Orders</p>
-							<p className="font-bold text-[#776B5D] text-3xl">{formatNumber(analytics.totalOrders)}</p>
+							<p className="font-bold text-[#776B5D] text-2xl sm:text-3xl">{formatNumber(analytics.totalOrders)}</p>
 						</div>
-						<div className="bg-blue-100 p-3 rounded-full">
-							<ShoppingCart className="w-6 h-6 text-blue-600" />
+						<div className="bg-blue-100 p-2 sm:p-3 rounded-full flex-shrink-0">
+							<ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
 						</div>
 					</div>
 					<div className="space-y-2">
@@ -232,17 +232,17 @@ const Dashboard: React.FC = () => {
 				</div>
 
 				{/* Best Seller */}
-				<div className="bg-white shadow-sm p-6 rounded-xl">
+				<div className="bg-white shadow-sm p-4 sm:p-6 rounded-xl">
 					<div className="flex justify-between items-start mb-4">
-						<div>
+						<div className="flex-1 min-w-0">
 							<p className="mb-1 font-medium text-[#776B5D]/70 text-sm">Best Seller</p>
-							<p className="flex items-center font-bold text-[#776B5D] text-2xl">
-								<Star className="mr-2 w-5 h-5 text-yellow-500" />
-								{analytics.topSellingItems[0]?.name || 'Cappuccino'}
+							<p className="flex items-center font-bold text-[#776B5D] text-lg sm:text-2xl">
+								<Star className="mr-2 w-4 h-4 sm:w-5 sm:h-5 text-yellow-500 flex-shrink-0" />
+								<span className="truncate">{analytics.topSellingItems[0]?.name || 'Cappuccino'}</span>
 							</p>
 						</div>
-						<div className="bg-purple-100 p-3 rounded-full">
-							<TrendingUp className="w-6 h-6 text-purple-600" />
+						<div className="bg-purple-100 p-2 sm:p-3 rounded-full flex-shrink-0">
+							<TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
 						</div>
 					</div>
 					<div className="space-y-2">
@@ -263,14 +263,14 @@ const Dashboard: React.FC = () => {
 				</div>
 
 				{/* Low Stock Items */}
-				<div className="bg-white shadow-sm p-6 rounded-xl">
+				<div className="bg-white shadow-sm p-4 sm:p-6 rounded-xl">
 					<div className="flex justify-between items-start mb-4">
-						<div>
+						<div className="flex-1 min-w-0">
 							<p className="mb-1 font-medium text-[#776B5D]/70 text-sm">Low Stock Items</p>
-							<p className="font-bold text-[#776B5D] text-3xl">{lowStockItems.length}</p>
+							<p className="font-bold text-[#776B5D] text-2xl sm:text-3xl">{lowStockItems.length}</p>
 						</div>
-						<div className="bg-orange-100 p-3 rounded-full">
-							<AlertTriangle className="w-6 h-6 text-orange-600" />
+						<div className="bg-orange-100 p-2 sm:p-3 rounded-full flex-shrink-0">
+							<AlertTriangle className="w-5 h-5 sm:w-6 sm:h-6 text-orange-600" />
 						</div>
 					</div>
 					<div className="space-y-2">
@@ -289,13 +289,13 @@ const Dashboard: React.FC = () => {
 			</div>
 
 			{/* Charts and Recent Sales Section */}
-			<div className="gap-6 grid grid-cols-1 lg:grid-cols-2 mb-8">
+			<div className="gap-4 sm:gap-6 grid grid-cols-1 lg:grid-cols-2 mb-6 sm:mb-8">
 				{/* Weekly Sales Trend */}
-				<div className="bg-white shadow-sm p-6 rounded-xl">
+				<div className="bg-white shadow-sm p-4 sm:p-6 rounded-xl">
 					<div className="flex justify-between items-center mb-4">
-						<h3 className="font-semibold text-[#776B5D] text-lg">Weekly Sales Trend</h3>
+						<h3 className="font-semibold text-[#776B5D] text-base sm:text-lg">Weekly Sales Trend</h3>
 					</div>
-					<div className="h-80">
+					<div className="h-64 sm:h-80">
 						<ResponsiveContainer width="100%" height="100%">
 							<AreaChart data={analytics.revenueByDay}>
 								<CartesianGrid strokeDasharray="3 3" stroke="#B0A695" />
@@ -322,8 +322,8 @@ const Dashboard: React.FC = () => {
 				</div>
 
 				{/* Top Selling Items */}
-				<div className="bg-white shadow-sm p-6 rounded-xl">
-					<h3 className="mb-4 font-semibold text-[#776B5D] text-lg">Top Selling Items Today</h3>
+				<div className="bg-white shadow-sm p-4 sm:p-6 rounded-xl">
+					<h3 className="mb-4 font-semibold text-[#776B5D] text-base sm:text-lg">Top Selling Items Today</h3>
 					<div className="space-y-4">
 						{analytics.topSellingItems.length === 0 ? (
 							<div className="py-8 text-[#776B5D]/70 text-center">No sales data for today.</div>
@@ -351,8 +351,8 @@ const Dashboard: React.FC = () => {
 			</div>
 
 			{/* Low Stock Alerts - Full width */}
-			<div className="bg-white shadow-sm p-6 mb-8 rounded-xl">
-				<h3 className="mb-4 font-semibold text-[#776B5D] text-lg">Low Stock Alerts</h3>
+			<div className="bg-white shadow-sm p-4 sm:p-6 mb-6 sm:mb-8 rounded-xl">
+				<h3 className="mb-4 font-semibold text-[#776B5D] text-base sm:text-lg">Low Stock Alerts</h3>
 				{lowStockItems.length > 0 ? (
 					<div className="space-y-3">
 						{lowStockItems.map((item) => (
@@ -379,12 +379,12 @@ const Dashboard: React.FC = () => {
 			</div>
 
 			{/* Recent Orders - Card Layout */}
-			<div className="bg-white shadow-sm p-6 rounded-xl">
+			<div className="bg-white shadow-sm p-4 sm:p-6 rounded-xl">
 				<div className="flex justify-between items-center mb-4">
-					<h3 className="font-semibold text-[#776B5D] text-lg">Recent Orders</h3>
+					<h3 className="font-semibold text-[#776B5D] text-base sm:text-lg">Recent Orders</h3>
 					<button className="font-medium text-[#776B5D] hover:text-[#776B5D]/80 text-sm">View All</button>
 				</div>
-				<div className="gap-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+				<div className="gap-3 sm:gap-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
 					{recentOrders.map((order) => (
 						<div key={order.id} className="bg-[#F3EEEA] p-4 border border-[#B0A695]/20 hover:border-[#776B5D]/30 rounded-lg transition-colors">
 							<div className="flex justify-between items-start mb-3">

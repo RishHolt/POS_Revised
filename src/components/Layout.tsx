@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
@@ -14,18 +14,47 @@ import Order from "../pages/Order";
 
 const Layout: React.FC = () => {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
+	const [isMobile, setIsMobile] = useState(false);
+	
 	const handleToggleSidebar = () => setSidebarOpen((prev) => !prev);
+
+	useEffect(() => {
+		const checkScreenSize = () => {
+			setIsMobile(window.innerWidth < 768);
+			if (window.innerWidth < 768) {
+				setSidebarOpen(false);
+			}
+		};
+
+		checkScreenSize();
+		window.addEventListener('resize', checkScreenSize);
+		return () => window.removeEventListener('resize', checkScreenSize);
+	}, []);
+
 	return (
-		<div className="flex w-full h-dvh overflow-hidden">
-			<Sidebar open={sidebarOpen} onToggle={handleToggleSidebar} />
+		<div className="flex w-full h-dvh overflow-hidden relative">
+			<Sidebar open={sidebarOpen} onToggle={handleToggleSidebar} isMobile={isMobile} />
+			
+			{/* Mobile overlay */}
+			{isMobile && (
+				<div 
+					className={`fixed inset-0 bg-black/0 z-20 transition-all duration-300 ease-in-out ${
+						sidebarOpen ? 'bg-black/50' : 'pointer-events-none'
+					}`}
+					onClick={() => setSidebarOpen(false)}
+				/>
+			)}
+			
 			<div 
-				className="flex flex-col h-full overflow-hidden transition-all duration-300 ease-in-out"
-				style={{
-					width: sidebarOpen ? 'calc(100% - 18rem)' : 'calc(100% - 4rem)',
-					marginLeft: sidebarOpen ? '18rem' : '4rem'
-				}}
+				className={`flex flex-col h-full overflow-hidden transition-all duration-300 ease-in-out ${
+					isMobile 
+						? 'w-full' 
+						: sidebarOpen 
+							? 'w-[calc(100%-18rem)] ml-[18rem]' 
+							: 'w-[calc(100%-4rem)] ml-[4rem]'
+				}`}
 			>
-				<Header />
+				<Header onToggleSidebar={handleToggleSidebar} isMobile={isMobile} />
 				<div className="flex-1 w-full overflow-hidden">
 					<Routes>
 						<Route path="/dashboard" element={<Dashboard />} />
