@@ -32,7 +32,7 @@ const Layout: React.FC = () => {
 	}, []);
 
 	return (
-		<div className="flex w-full h-dvh overflow-hidden relative">
+		<div className="relative flex w-full h-dvh overflow-hidden">
 			<Sidebar open={sidebarOpen} onToggle={handleToggleSidebar} isMobile={isMobile} />
 			
 			{/* Mobile overlay */}
@@ -55,7 +55,7 @@ const Layout: React.FC = () => {
 				}`}
 			>
 				<Header onToggleSidebar={handleToggleSidebar} isMobile={isMobile} />
-				<div className="flex-1 w-full overflow-hidden">
+				<div className="flex-1 w-full overflow-y-auto">
 					<Routes>
 						<Route path="/dashboard" element={<Dashboard />} />
 						<Route path="/POS" element={<POS />} />

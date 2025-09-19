@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isMobile = false }) =>
 				{isMobile && onToggleSidebar && (
 					<button
 						onClick={onToggleSidebar}
-						className="p-2 rounded-lg hover:bg-[#B0A695]/20 transition-colors text-[#F3EEEA]"
+						className="hover:bg-[#B0A695]/20 p-2 rounded-lg text-[#F3EEEA] transition-colors"
 					>
 						<Menu className="w-6 h-6" />
 					</button>
@@ -52,15 +52,6 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isMobile = false }) =>
 			
 			{/* Right: Icons + Info */}
 			<div className="flex items-center gap-2 sm:gap-3">
-				{/* Search - hidden on very small screens */}
-				<div className="hidden sm:flex items-center bg-[#F3EEEA] shadow px-3 sm:px-4 py-2 rounded-xl w-[200px] lg:w-[350px]">
-					<Search className="mr-2 w-4 h-4 sm:w-5 sm:h-5 text-[#776B5D]" />
-					<input
-						type="text"
-						placeholder="Search..."
-						className="bg-transparent outline-none w-full text-[#776B5D] placeholder:text-[#776B5D]/60 text-sm"
-					/>
-				</div>
 				
 				{/* Date and Time - responsive sizing */}
 				<div className="hidden lg:flex items-center gap-2">
@@ -78,7 +69,7 @@ const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isMobile = false }) =>
 				</div>
 				
 				<button className="flex justify-center items-center bg-[#F3EEEA] hover:bg-[#B0A695]/20 shadow p-2 rounded-full transition-colors">
-					<Bell className="w-5 h-5 sm:w-6 sm:h-6 text-[#776B5D]" />
+					<Bell className="w-5 sm:w-6 h-5 sm:h-6 text-[#776B5D]" />
 				</button>
 			</div>
 		</header>

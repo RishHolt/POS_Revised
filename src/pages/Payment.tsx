@@ -1,10 +1,10 @@
 import React, { useState, useMemo } from "react";
-import { 
-    Banknote, 
-    Smartphone, 
-    ArrowLeft, 
-    CheckCircle, 
-    User, 
+import {
+    Banknote,
+    Smartphone,
+    ArrowLeft,
+    CheckCircle,
+    User,
     Search,
     Receipt,
     Star
@@ -13,14 +13,14 @@ import PageHeader from "../components/ui/PageHeader";
 import Button from "../components/ui/Button";
 import FormField, { Input } from "../components/ui/FormField";
 import { addonData } from "../mocks/addonData";
-import { 
-    loyaltyMembers, 
-    getLoyaltyMemberByPhone, 
+import {
+    loyaltyMembers,
+    getLoyaltyMemberByPhone,
     getSegmentColor,
     getSegmentIcon,
     type LoyaltyMember
 } from "../mocks/loyaltyData";
-import { 
+import {
     calculateRewardValue,
     type Reward
 } from "../mocks/rewardsData";
@@ -62,12 +62,11 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
     const [showRewardsModal, setShowRewardsModal] = useState(false);
     const [showJoinLoyaltyModal, setShowJoinLoyaltyModal] = useState(false);
 
-    // Calculate totals
     const subtotal = useMemo(() => {
         return orderItems.reduce((total, item) => {
-            const basePrice = item.selectedSize === 'small' ? item.small_price : 
-                            item.selectedSize === 'large' ? item.large_price : 
-                            item.medium_price;
+            const basePrice = item.selectedSize === 'small' ? item.small_price :
+                              item.selectedSize === 'large' ? item.large_price :
+                              item.medium_price;
             const addonsTotal = item.selectedAddons ? item.selectedAddons.reduce((sum, addonName) => {
                 const addon = addonData.find(a => a.name === addonName && a.available);
                 return sum + (addon ? addon.price : 0);
@@ -83,8 +82,7 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
     }, [selectedRewards, subtotal]);
 
     const totalDiscounts = useMemo(() => rewardsDiscount, [rewardsDiscount]);
-
-    const tax = useMemo(() => (subtotal - totalDiscounts) * 0.12, [subtotal, totalDiscounts]); // 12% VAT
+    const tax = useMemo(() => (subtotal - totalDiscounts) * 0.12, [subtotal, totalDiscounts]);
     const total = useMemo(() => subtotal - totalDiscounts + tax, [subtotal, totalDiscounts, tax]);
     const change = useMemo(() => {
         const paid = parseFloat(amountPaid) || 0;
@@ -109,18 +107,16 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
             return;
         }
 
-        // Search by phone number first
         const phoneMatch = getLoyaltyMemberByPhone(searchTerm);
         if (phoneMatch) {
             setLoyaltySearchResults([phoneMatch]);
             return;
         }
 
-        // Search by name
-        const nameMatches = loyaltyMembers.filter(member => 
+        const nameMatches = loyaltyMembers.filter(member =>
             member.name.toLowerCase().includes(searchTerm.toLowerCase()) && member.isActive
         );
-        setLoyaltySearchResults(nameMatches.slice(0, 5)); // Limit to 5 results
+        setLoyaltySearchResults(nameMatches.slice(0, 5));
     };
 
     const handleSelectLoyaltyMember = (member: LoyaltyMember) => {
@@ -133,7 +129,7 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
     const handleRemoveLoyaltyMember = () => {
         setSelectedLoyaltyMember(null);
         setLoyaltySearch("");
-        setSelectedRewards([]); // Clear rewards when removing loyalty member
+        setSelectedRewards([]);
     };
 
     const handleSelectReward = (reward: Reward) => {
@@ -145,13 +141,9 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
     };
 
     const handleJoinLoyalty = (customerData: { name: string; phone: string; email: string }) => {
-        // In a real application, this would make an API call to create a new loyalty member
-        // For now, we'll just show an alert and set the customer name
         alert(`Welcome to our loyalty program, ${customerData.name}! You'll receive 100 welcome points.`);
         setCustomerName(customerData.name);
-        // You could also add the new member to the loyalty data here
     };
-
 
     const handleConfirmPayment = () => {
         if (paymentMethod === 'cash' && parseFloat(amountPaid) < total) {
@@ -184,16 +176,15 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
     ];
 
     return (
-        <div className="flex lg:flex-row flex-col bg-[#F3EEEA] w-full h-full overflow-hidden">
-            
+        <div className="flex lg:flex-row flex-col bg-[#F3EEEA] w-full h-full lg:overflow-hidden">
             {/* Left: Order Review & Customer Info */}
-            <div className="flex flex-col flex-1 p-4 lg:p-8 min-h-0 overflow-y-auto custom-scrollbar">
-                <div className="flex items-center mb-6">
-                    <Button 
-                        variant="ghost" 
+            <div className="flex flex-col flex-1 p-4 md:p-6 lg:p-8 lg:overflow-y-auto custom-scrollbar">
+                <div className="flex md:flex-row flex-col md:items-center gap-4 mb-6">
+                    <Button
+                        variant="ghost"
                         onClick={onBack}
                         icon={ArrowLeft}
-                        className="mr-4"
+                        className="self-start"
                     >
                         Back to POS
                     </Button>
@@ -206,13 +197,13 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
 
                 {/* Order List */}
                 <div className="bg-white shadow-sm mb-6 border border-[#B0A695]/20 rounded-xl">
-                    <div className="p-6 border-[#B0A695]/20 border-b">
+                    <div className="p-4 md:p-6 border-[#B0A695]/20 border-b">
                         <h3 className="flex items-center font-semibold text-[#776B5D] text-lg">
-                            <Receipt className="mr-2 w-5 h-5" />
+                            <Receipt className="flex-shrink-0 mr-2 w-5 h-5" />
                             Order Summary
                         </h3>
                     </div>
-                    <div className="p-6">
+                    <div className="p-4 md:p-6">
                         {orderItems.length === 0 ? (
                             <div className="py-8 text-[#776B5D]/60 text-center">
                                 No items in order
@@ -220,9 +211,9 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
                         ) : (
                             <div className="space-y-4">
                                 {orderItems.map((item) => {
-                                    const basePrice = item.selectedSize === 'small' ? item.small_price : 
-                                                    item.selectedSize === 'large' ? item.large_price : 
-                                                    item.medium_price;
+                                    const basePrice = item.selectedSize === 'small' ? item.small_price :
+                                                      item.selectedSize === 'large' ? item.large_price :
+                                                      item.medium_price;
                                     const addonsTotal = item.selectedAddons ? item.selectedAddons.reduce((sum, addonName) => {
                                         const addon = addonData.find(a => a.name === addonName && a.available);
                                         return sum + (addon ? addon.price : 0);
@@ -230,19 +221,19 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
                                     const itemTotal = ((basePrice ?? 0) + addonsTotal) * item.quantity;
 
                                     return (
-                                        <div key={item.orderId} className="flex justify-between items-center bg-[#F3EEEA] p-4 rounded-lg">
+                                        <div key={item.orderId} className="flex md:flex-row flex-col md:justify-between md:items-center gap-4 bg-[#F3EEEA] p-4 rounded-lg">
                                             <div className="flex items-center space-x-4">
-                                                <img 
-                                                    src={item.image} 
-                                                    alt={item.name} 
-                                                    className="rounded-lg w-16 h-16 object-cover"
+                                                <img
+                                                    src={item.image}
+                                                    alt={item.name}
+                                                    className="flex-shrink-0 rounded-lg w-14 md:w-16 h-14 md:h-16 object-cover"
                                                 />
-                                                <div>
+                                                <div className="flex-1 min-w-0">
                                                     <h4 className="font-medium text-[#776B5D]">{item.name}</h4>
                                                     <p className="text-[#776B5D]/70 text-sm">
-                                                        {item.selectedSize.charAt(0).toUpperCase() + item.selectedSize.slice(1)} • 
+                                                        {item.selectedSize.charAt(0).toUpperCase() + item.selectedSize.slice(1)}
                                                         {item.selectedAddons && item.selectedAddons.length > 0 && (
-                                                            <span> +{item.selectedAddons.length} add-ons</span>
+                                                            <span> • +{item.selectedAddons.length} add-ons</span>
                                                         )}
                                                     </p>
                                                     {item.selectedAddons && item.selectedAddons.length > 0 && (
@@ -252,7 +243,7 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
                                                     )}
                                                 </div>
                                             </div>
-                                            <div className="text-right">
+                                            <div className="flex-shrink-0 text-right">
                                                 <div className="font-medium text-[#776B5D]">
                                                     {item.quantity}x {formatPrice(basePrice ?? 0)}
                                                 </div>
@@ -274,28 +265,28 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
                 </div>
 
                 {/* Customer Information */}
-                <div className="bg-white shadow-sm p-6 border border-[#B0A695]/20 rounded-xl">
-                    <div className="flex justify-between items-center mb-6">
+                <div className="bg-white shadow-sm p-4 md:p-6 border border-[#B0A695]/20 rounded-xl">
+                    <div className="flex md:flex-row flex-col md:justify-between md:items-center gap-4 mb-6">
                         <h3 className="flex items-center font-semibold text-[#776B5D] text-lg">
-                            <User className="mr-2 w-5 h-5" />
+                            <User className="flex-shrink-0 mr-2 w-5 h-5" />
                             Customer Information
                         </h3>
                         <Button
                             variant="secondary"
                             onClick={() => setShowJoinLoyaltyModal(true)}
                             icon={Star}
+                            className="self-start md:self-auto"
                         >
                             Join Loyalty Program
                         </Button>
                     </div>
-                    
-                    {/* Loyalty Member Search */}
+
                     <FormField label="Loyalty Search">
                         <div className="relative">
                             <Input
                                 value={loyaltySearch}
                                 onChange={(e) => handleLoyaltySearch(e.target.value)}
-                                placeholder="Search by name or phone number"
+                                placeholder="Search by name or phone"
                                 icon={Search}
                             />
                             {loyaltySearchResults.length > 0 && (
@@ -306,13 +297,13 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
                                             onClick={() => handleSelectLoyaltyMember(member)}
                                             className="hover:bg-[#F3EEEA] p-3 border-[#B0A695]/20 border-b last:border-b-0 cursor-pointer"
                                         >
-                                            <div className="flex justify-between items-center">
-                                                <div>
+                                            <div className="flex md:flex-row flex-col md:justify-between md:items-center gap-2">
+                                                <div className="min-w-0">
                                                     <div className="font-medium text-[#776B5D]">{member.name}</div>
                                                     <div className="text-[#776B5D]/70 text-sm">{member.phone}</div>
                                                 </div>
-                                                <div className="text-right">
-                                                    <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getSegmentColor(member.segment)}`}>
+                                                <div className="flex-shrink-0 text-left md:text-right">
+                                                    <div className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${getSegmentColor(member.segment)}`}>
                                                         {member.segment.toUpperCase()}
                                                     </div>
                                                     <div className="mt-1 text-[#776B5D]/70 text-sm">{member.points} pts</div>
@@ -325,14 +316,13 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
                         </div>
                     </FormField>
 
-                    {/* Selected Loyalty Member */}
                     {selectedLoyaltyMember && (
                         <div className="bg-[#F3EEEA] mt-4 p-4 border border-[#B0A695]/20 rounded-lg">
-                            <div className="flex justify-between items-start">
-                                <div>
-                                    <div className="flex items-center gap-2 mb-2">
+                            <div className="flex md:flex-row flex-col justify-between items-start gap-4">
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex md:flex-row flex-col items-start md:items-center gap-2 mb-2">
                                         <span className="font-medium text-[#776B5D]">{selectedLoyaltyMember.name}</span>
-                                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getSegmentColor(selectedLoyaltyMember.segment)}`}>
+                                        <span className={`inline-flex items-center self-start rounded-full px-2 py-1 text-xs font-medium ${getSegmentColor(selectedLoyaltyMember.segment)}`}>
                                             {getSegmentIcon(selectedLoyaltyMember.segment)} {selectedLoyaltyMember.segment.toUpperCase()}
                                         </span>
                                     </div>
@@ -342,41 +332,39 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
                                 </div>
                                 <button
                                     onClick={handleRemoveLoyaltyMember}
-                                    className="text-red-500 hover:text-red-700 text-sm"
+                                    className="flex-shrink-0 text-red-500 hover:text-red-700 text-sm"
                                 >
                                     Remove
                                 </button>
                             </div>
-                            
-                            {/* Rewards Selection */}
+
                             <div className="mt-4">
-                                <div className="flex justify-between items-center mb-3">
+                                <div className="flex md:flex-row flex-col md:justify-between items-start md:items-center gap-3 mb-3">
                                     <h4 className="font-medium text-[#776B5D]">Available Rewards</h4>
                                     <button
                                         onClick={() => setShowRewardsModal(true)}
-                                        className="bg-[#776B5D] hover:bg-[#776B5D]/90 px-3 py-1 rounded-lg text-white text-sm transition-colors"
+                                        className="self-start md:self-auto bg-[#776B5D] hover:bg-[#776B5D]/90 px-3 py-1 rounded-lg text-white text-sm transition-colors"
                                     >
                                         Select Rewards
                                     </button>
                                 </div>
-                                
-                                {/* Selected Rewards */}
+
                                 {selectedRewards.length > 0 && (
                                     <div className="space-y-2">
                                         {selectedRewards.map((reward) => (
                                             <div key={reward.id} className="flex justify-between items-center bg-white p-3 border border-[#B0A695]/20 rounded-lg">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="flex justify-center items-center bg-[#776B5D]/10 rounded-full w-6 h-6">
+                                                <div className="flex flex-1 items-center gap-3 min-w-0">
+                                                    <div className="flex flex-shrink-0 justify-center items-center bg-[#776B5D]/10 rounded-full w-6 h-6">
                                                         <span className="font-medium text-[#776B5D] text-xs">
                                                             {reward.type.charAt(0).toUpperCase()}
                                                         </span>
                                                     </div>
-                                                    <div>
+                                                    <div className="flex-1 min-w-0">
                                                         <div className="font-medium text-[#776B5D] text-sm">{reward.name}</div>
                                                         <div className="text-[#776B5D]/70 text-xs">{reward.description}</div>
                                                     </div>
                                                 </div>
-                                                <div className="flex items-center gap-2">
+                                                <div className="flex flex-shrink-0 items-center gap-2">
                                                     <span className="font-medium text-[#776B5D] text-sm">{reward.pointsRequired} pts</span>
                                                     <button
                                                         onClick={() => handleRemoveReward(reward.id)}
@@ -389,17 +377,16 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
                                         ))}
                                     </div>
                                 )}
-                                
+
                                 {selectedRewards.length === 0 && (
                                     <div className="py-2 text-[#776B5D]/60 text-sm text-center">
-                                        No rewards selected. Click "Select Rewards" to choose from available rewards.
+                                        No rewards selected.
                                     </div>
                                 )}
                             </div>
                         </div>
                     )}
 
-                    {/* Customer Name (if no loyalty member selected) */}
                     {!selectedLoyaltyMember && (
                         <FormField label="Customer Name" className="mt-4">
                             <Input
@@ -423,17 +410,14 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
                 </div>
             </div>
 
-            {/* Right: Payment Details - FIXED LAYOUT */}
-            <div className="flex flex-col bg-white shadow-lg border-[#B0A695] border-t lg:border-t-0 lg:border-l w-full lg:w-[400px] h-full">
-                {/* Header */}
-                <div className="flex flex-shrink-0 justify-between items-center p-6 pb-4">
+            {/* Right: Payment Details */}
+            <div className="flex flex-col lg:flex-shrink-0 bg-white shadow-lg border-[#B0A695] border-t lg:border-t-0 lg:border-l w-full lg:w-[400px] lg:h-full">
+                <div className="flex flex-shrink-0 justify-between items-center p-4 md:p-6 pb-4">
                     <h2 className="font-bold text-[#776B5D] text-xl">Payment Summary</h2>
                 </div>
-                <hr className="flex-shrink-0 mx-6 border-[#B0A695]" />
-                
-                {/* Payment Details - Scrollable Content */}
-                <div className="flex flex-col px-6 py-4 h-full overflow-y-auto custom-scrollbar">
-                    {/* Totals */}
+                <hr className="flex-shrink-0 mx-4 md:mx-6 border-[#B0A695]" />
+
+                <div className="flex flex-col flex-1 px-4 md:px-6 py-4 overflow-y-auto custom-scrollbar">
                     <div className="space-y-3 mb-6">
                         <div className="flex justify-between text-[#776B5D]">
                             <span>Subtotal</span>
@@ -456,7 +440,6 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
                         </div>
                     </div>
 
-                    {/* Payment Method Selection */}
                     <div className="mb-6">
                         <h3 className="mb-4 font-semibold text-[#776B5D] text-lg">Payment Method</h3>
                         <div className="space-y-3">
@@ -467,15 +450,15 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
                                         key={method.value}
                                         onClick={() => !method.disabled && handlePaymentMethodChange(method.value)}
                                         disabled={method.disabled}
-                                        className={`w-full flex items-center p-3 rounded-lg border transition-colors ${
+                                        className={`flex w-full items-center rounded-lg border p-3 transition-colors ${
                                             method.disabled
-                                                ? 'border-gray-300 bg-gray-100 cursor-not-allowed opacity-50'
+                                                ? 'cursor-not-allowed border-gray-300 bg-gray-100 opacity-50'
                                                 : paymentMethod === method.value
                                                 ? 'border-[#776B5D] bg-[#776B5D]/10'
                                                 : 'border-[#B0A695] hover:border-[#776B5D]/50'
                                         }`}
                                     >
-                                        <Icon className={`w-5 h-5 mr-3 ${method.disabled ? 'text-gray-400' : 'text-[#776B5D]'}`} />
+                                        <Icon className={`mr-3 h-5 w-5 flex-shrink-0 ${method.disabled ? 'text-gray-400' : 'text-[#776B5D]'}`} />
                                         <span className={`font-medium ${method.disabled ? 'text-gray-400' : 'text-[#776B5D]'}`}>
                                             {method.label}
                                         </span>
@@ -485,7 +468,6 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
                         </div>
                     </div>
 
-                    {/* Payment Input */}
                     <div className="mb-6">
                         <h3 className="mb-4 font-semibold text-[#776B5D] text-lg">Payment Details</h3>
                         {paymentMethod === 'cash' && (
@@ -499,7 +481,6 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
                                 />
                             </FormField>
                         )}
-                        
                         {paymentMethod === 'cash' && change > 0 && (
                             <div className="bg-green-50 mt-4 p-4 border border-green-200 rounded-lg">
                                 <div className="flex justify-between items-center">
@@ -508,7 +489,6 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
                                 </div>
                             </div>
                         )}
-
                         {paymentMethod === 'gcash' && (
                             <div className="bg-red-50 p-4 border border-red-200 rounded-lg">
                                 <div className="flex items-center text-red-800">
@@ -518,9 +498,8 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
                         )}
                     </div>
                 </div>
-                
-                {/* Sticky Footer - Action Buttons */}
-                <div className="flex flex-col bg-white p-4 lg:p-6 border-[#B0A695]/20 border-t w-full h-fit">
+
+                <div className="flex flex-col bg-white p-4 md:p-6 border-[#B0A695]/20 border-t w-full">
                     <div className="space-y-3">
                         <Button
                             onClick={handleConfirmPayment}
@@ -544,7 +523,6 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
                 </div>
             </div>
 
-            {/* Rewards Selection Modal */}
             {showRewardsModal && selectedLoyaltyMember && (
                 <SelectRewardsModal
                     isOpen={true}
@@ -557,7 +535,6 @@ const Payment: React.FC<PaymentProps> = ({ orderItems, onBack, onPaymentComplete
                 />
             )}
 
-            {/* Join Loyalty Program Modal */}
             <JoinLoyaltyModal
                 isOpen={showJoinLoyaltyModal}
                 onClose={() => setShowJoinLoyaltyModal(false)}

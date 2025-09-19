@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { showConfirm } from "../utils/swal";
 import {
 	ChevronLeft,
-	ChevronRight,
+	Menu,
 	LayoutDashboard,
 	ShoppingCart,
 	Utensils,
@@ -100,7 +100,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onToggle, isMobile = false }) =
 		}`}>
 			<div className="flex flex-col h-full">
 				{/* Header */}
-				<div className="flex items-center justify-between p-4 h-18 border-b border-[#B0A695]/30">
+				<div className="flex justify-between items-center p-4 border-[#B0A695]/30 border-b h-18">
 					<div className={`transition-all duration-300 ease-in-out ${open ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'}`}>
 						{open && (
 							<h1 className="font-bold text-[#F3EEEA] text-xl whitespace-nowrap">
@@ -110,18 +110,18 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onToggle, isMobile = false }) =
 					</div>
 					<button
 						onClick={onToggle}
-						className="p-2 rounded-lg hover:bg-[#B0A695]/20 transition-colors"
+						className="hover:bg-[#B0A695]/20 p-2 rounded-lg transition-colors"
 					>
 						{open ? (
 							<ChevronLeft className="w-5 h-5 text-[#F3EEEA]" />
 						) : (
-							<ChevronRight className="w-5 h-5 text-[#F3EEEA]" />
+							<Menu className="w-5 h-5 text-[#F3EEEA]" />
 						)}
 					</button>
 				</div>
 
 				{/* Navigation */}
-				<nav className="flex-1 px-3 py-4 space-y-2">
+				<nav className="flex-1 space-y-2 px-3 py-4">
 					{menuItems.map((item) => {
 						if (item.permission && !hasPermission(item.permission)) return null;
 						
@@ -153,7 +153,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onToggle, isMobile = false }) =
 				</nav>
 
 				{/* User Section */}
-				<div className="p-3 border-t border-[#B0A695]/30">
+				<div className="p-3 border-[#B0A695]/30 border-t">
 					<div className={`transition-all duration-300 ease-in-out ${open ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'}`}>
 						{open ? (
 							<div className="bg-[#F3EEEA] p-3 rounded-lg">
@@ -173,14 +173,14 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onToggle, isMobile = false }) =
 								<div className="flex gap-2">
 									<Link
 										to="/Settings"
-										className="flex-1 flex items-center justify-center gap-2 bg-[#776B5D] px-3 py-2 rounded-lg font-medium text-[#F3EEEA] text-xs hover:bg-[#776B5D]/90 transition-colors"
+										className="flex flex-1 justify-center items-center gap-2 bg-[#776B5D] hover:bg-[#776B5D]/90 px-3 py-2 rounded-lg font-medium text-[#F3EEEA] text-xs transition-colors"
 									>
 										<Settings className="w-4 h-4" />
 										Settings
 									</Link>
 									<button
 										onClick={handleLogout}
-										className="flex-1 flex items-center justify-center gap-2 bg-[#776B5D] px-3 py-2 rounded-lg font-medium text-[#F3EEEA] text-xs hover:bg-[#776B5D]/90 transition-colors"
+										className="flex flex-1 justify-center items-center gap-2 bg-[#776B5D] hover:bg-[#776B5D]/90 px-3 py-2 rounded-lg font-medium text-[#F3EEEA] text-xs transition-colors"
 									>
 										<LogOut className="w-4 h-4" />
 										Logout
@@ -191,14 +191,14 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onToggle, isMobile = false }) =
 							<div className="flex flex-col gap-2">
 								<Link
 									to="/Settings"
-									className="flex items-center justify-center p-2 rounded-lg text-[#F3EEEA] hover:bg-[#B0A695]/20 transition-colors"
+									className="flex justify-center items-center hover:bg-[#B0A695]/20 p-2 rounded-lg text-[#F3EEEA] transition-colors"
 									title="Settings"
 								>
 									<Settings className="w-5 h-5" />
 								</Link>
 								<button
 									onClick={handleLogout}
-									className="flex items-center justify-center p-2 rounded-lg text-[#F3EEEA] hover:bg-[#B0A695]/20 transition-colors"
+									className="flex justify-center items-center hover:bg-[#B0A695]/20 p-2 rounded-lg text-[#F3EEEA] transition-colors"
 									title="Logout"
 								>
 									<LogOut className="w-5 h-5" />
