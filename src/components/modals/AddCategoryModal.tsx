@@ -1,6 +1,6 @@
 // AddCategoryModal.tsx
 import React, { useState } from "react";
-import { Plus, Trash2, Edit, Check, X } from "lucide-react";
+import { Trash2, Edit, Check, X } from "lucide-react";
 import Modal from "../ui/Modal";
 import Button from "../ui/Button";
 import FormField, { Input } from "../ui/FormField";
@@ -45,15 +45,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({ open, onClose, onCo
     setEditName("");
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      if (editingCategory) {
-        handleSaveEdit();
-      } else {
-        handleSubmit();
-      }
-    }
-  };
+  // Removed unused handleKeyPress function
 
   const footer = (
     <>
@@ -80,33 +72,30 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({ open, onClose, onCo
             value={name} 
             onChange={e => setName(e.target.value)} 
             placeholder="Enter category name"
-            onKeyPress={handleKeyPress}
           />
         </FormField>
         
         {name.trim() && categories.includes(name.trim()) && (
-          <p className="text-red-500 text-xs mt-1">Category already exists</p>
+          <p className="mt-1 text-red-500 text-xs">Category already exists</p>
         )}
         
         <div>
           <h3 className="mb-3 font-semibold text-[#776B5D] text-sm">Existing Categories ({categories.length})</h3>
-          <div className="max-h-60 overflow-y-auto space-y-2">
+          <div className="space-y-2 max-h-60 overflow-y-auto">
             {categories.length === 0 ? (
-              <div className="text-center py-8 text-gray-500 bg-gray-50 rounded-lg">
-                <div className="text-4xl mb-2">📂</div>
+              <div className="bg-gray-50 py-8 rounded-lg text-gray-500 text-center">
+                <div className="mb-2 text-4xl">📂</div>
                 <p className="text-sm">No categories yet. Add your first category above!</p>
               </div>
             ) : (
               categories.map(cat => (
-                <div key={cat} className="flex items-center justify-between bg-white px-3 py-2 border border-[#B0A695] rounded-lg group hover:shadow-sm transition-shadow">
+                <div key={cat} className="group flex justify-between items-center bg-white hover:shadow-sm px-3 py-2 border border-[#B0A695] rounded-lg transition-shadow">
                   {editingCategory === cat ? (
-                    <div className="flex items-center gap-2 flex-1">
+                    <div className="flex flex-1 items-center gap-2">
                       <Input
                         value={editName}
                         onChange={e => setEditName(e.target.value)}
-                        onKeyPress={handleKeyPress}
                         className="flex-1"
-                        autoFocus
                       />
                       <Button
                         variant="secondary"
@@ -114,19 +103,23 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({ open, onClose, onCo
                         icon={Check}
                         onClick={handleSaveEdit}
                         disabled={!editName.trim() || editName.trim() === cat}
-                      />
+                      >
+                        {""}
+                      </Button>
                       <Button
                         variant="secondary"
                         size="sm"
                         icon={X}
                         onClick={handleCancelEdit}
-                      />
+                      >
+                        {""}
+                      </Button>
                     </div>
                   ) : (
                     <>
                       <div className="flex items-center gap-3">
-                        <div className="w-2 h-2 bg-[#776B5D] rounded-full"></div>
-                        <span className="text-[#776B5D] font-medium">{cat}</span>
+                        <div className="bg-[#776B5D] rounded-full w-2 h-2"></div>
+                        <span className="font-medium text-[#776B5D]">{cat}</span>
                       </div>
                       <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                         <Button
@@ -134,13 +127,17 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({ open, onClose, onCo
                           size="sm"
                           icon={Edit}
                           onClick={() => handleEdit(cat)}
-                        />
+                        >
+                          {""}
+                        </Button>
                         <Button
                           variant="danger"
                           size="sm"
                           icon={Trash2}
                           onClick={() => onRemove(cat)}
-                        />
+                        >
+                          {""}
+                        </Button>
                       </div>
                     </>
                   )}

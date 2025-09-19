@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Clipboard, Plus, Star, Settings } from "lucide-react";
 import AddMenuModal from "../components/modals/AddMenuModal";
-import AddAddonModal from "../components/modals/AddAddonModal";
 import AddCategoryModal from "../components/modals/AddCategoryModal";
 import AddonManagementModal from "../components/modals/AddonManagementModal";
 import EditMenuModal from "../components/modals/EditMenuModal";
@@ -18,7 +17,6 @@ const Menu = () => {
     const [menuModalOpen, setMenuModalOpen] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
-    const [addonModalOpen, setAddonModalOpen] = useState(false);
     const [addonManagementModalOpen, setAddonManagementModalOpen] = useState(false);
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
     // Category state for AddCategoryModal - these match the actual menu categories
@@ -145,10 +143,10 @@ const Menu = () => {
 
             {filteredMenu.length === 0 && (
                 <div className="flex flex-col justify-center items-center py-12 sm:py-16 text-center">
-                    <Clipboard className="mb-3 sm:mb-4 w-12 h-12 sm:w-16 sm:h-16 text-[#776B5D]/30" />
+                    <Clipboard className="mb-3 sm:mb-4 w-12 sm:w-16 h-12 sm:h-16 text-[#776B5D]/30" />
                     <h3 className="mb-2 font-bold text-[#776B5D] text-base sm:text-lg">No menu items found</h3>
                     <p className="mb-4 sm:mb-6 text-[#776B5D]/60 text-sm sm:text-base">Try adjusting your search terms or filters.</p>
-                    <button onClick={() => setMenuModalOpen(true)} className="bg-[#776B5D] hover:bg-[#776B5D]/90 px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-medium text-[#F3EEEA] transition-colors duration-150 text-sm sm:text-base"><Plus className="inline mr-2 w-3 h-3 sm:w-4 sm:h-4" />Add Menu Item</button>
+                    <button onClick={() => setMenuModalOpen(true)} className="bg-[#776B5D] hover:bg-[#776B5D]/90 px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-medium text-[#F3EEEA] text-sm sm:text-base transition-colors duration-150"><Plus className="inline mr-2 w-3 sm:w-4 h-3 sm:h-4" />Add Menu Item</button>
                 </div>
             )}
 

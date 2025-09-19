@@ -1,6 +1,6 @@
 // AddonManagementModal.tsx
 import React, { useState } from "react";
-import { Edit, Trash2, Plus, Search, Filter } from "lucide-react";
+import { Edit, Trash2, Plus, Search } from "lucide-react";
 import Modal from "../ui/Modal";
 import Button from "../ui/Button";
 import FormField, { Input } from "../ui/FormField";
@@ -102,7 +102,7 @@ const AddonManagementModal: React.FC<AddonManagementModalProps> = ({ open, onClo
         <div className="flex-1">
           <FormField label="Search Addons">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Search className="top-1/2 left-3 absolute w-4 h-4 text-gray-400 -translate-y-1/2 transform" />
               <Input
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -117,7 +117,7 @@ const AddonManagementModal: React.FC<AddonManagementModalProps> = ({ open, onClo
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="w-full px-3 py-2 border border-[#B0A695] rounded-lg focus:ring-2 focus:ring-[#776B5D] focus:border-transparent appearance-none bg-white text-[#776B5D]"
+              className="bg-white px-3 py-2 border border-[#B0A695] focus:border-transparent rounded-lg focus:ring-[#776B5D] focus:ring-2 w-full text-[#776B5D] appearance-none"
             >
               <option value="all">All Categories</option>
               {categories.slice(1).map(cat => (
@@ -138,14 +138,14 @@ const AddonManagementModal: React.FC<AddonManagementModalProps> = ({ open, onClo
       </div>
 
       {/* Addons List */}
-      <div className="max-h-96 overflow-y-auto space-y-2">
+      <div className="space-y-2 max-h-96 overflow-y-auto">
         {filteredAddons.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
+          <div className="py-8 text-gray-500 text-center">
             No addons found matching your criteria.
           </div>
         ) : (
           filteredAddons.map(addon => (
-            <div key={addon.id} className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg hover:shadow-sm transition-shadow">
+            <div key={addon.id} className="flex justify-between items-center bg-white hover:shadow-sm p-4 border border-gray-200 rounded-lg transition-shadow">
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
                   <h3 className="font-semibold text-gray-900">{addon.name}</h3>
@@ -159,9 +159,9 @@ const AddonManagementModal: React.FC<AddonManagementModalProps> = ({ open, onClo
                   </span>
                 </div>
                 {addon.description && (
-                  <p className="text-sm text-gray-600 mb-1">{addon.description}</p>
+                  <p className="mb-1 text-gray-600 text-sm">{addon.description}</p>
                 )}
-                <p className="text-lg font-bold text-[#776B5D]">{formatPrice(addon.price)}</p>
+                <p className="font-bold text-[#776B5D] text-lg">{formatPrice(addon.price)}</p>
               </div>
               <div className="flex items-center gap-2">
                 <Button
@@ -197,11 +197,11 @@ const AddonManagementModal: React.FC<AddonManagementModalProps> = ({ open, onClo
 
   const editForm = editingAddon && (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+      <h3 className="mb-4 font-semibold text-gray-900 text-lg">
         {isAddingNew ? 'Add New Addon' : 'Edit Addon'}
       </h3>
       
-      <div className="grid grid-cols-2 gap-4">
+      <div className="gap-4 grid grid-cols-2">
         <FormField label="Name" required>
           <Input
             value={editingAddon.name}
@@ -214,7 +214,7 @@ const AddonManagementModal: React.FC<AddonManagementModalProps> = ({ open, onClo
           <select
             value={editingAddon.category}
             onChange={(e) => setEditingAddon({ ...editingAddon, category: e.target.value as any })}
-            className="w-full px-3 py-2 border border-[#B0A695] rounded-lg focus:ring-2 focus:ring-[#776B5D] focus:border-transparent appearance-none bg-white text-[#776B5D]"
+            className="bg-white px-3 py-2 border border-[#B0A695] focus:border-transparent rounded-lg focus:ring-[#776B5D] focus:ring-2 w-full text-[#776B5D] appearance-none"
           >
             {categories.slice(1).map(cat => (
               <option key={cat} value={cat}>
@@ -225,11 +225,11 @@ const AddonManagementModal: React.FC<AddonManagementModalProps> = ({ open, onClo
         </FormField>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="gap-4 grid grid-cols-2">
         <FormField label="Price" required>
           <Input
             type="number"
-            value={editingAddon.price}
+            value={editingAddon.price.toString()}
             onChange={(e) => setEditingAddon({ ...editingAddon, price: parseFloat(e.target.value) || 0 })}
             placeholder="0.00"
           />
@@ -239,7 +239,7 @@ const AddonManagementModal: React.FC<AddonManagementModalProps> = ({ open, onClo
           <select
             value={editingAddon.available ? 'available' : 'unavailable'}
             onChange={(e) => setEditingAddon({ ...editingAddon, available: e.target.value === 'available' })}
-            className="w-full px-3 py-2 border border-[#B0A695] rounded-lg focus:ring-2 focus:ring-[#776B5D] focus:border-transparent appearance-none bg-white text-[#776B5D]"
+            className="bg-white px-3 py-2 border border-[#B0A695] focus:border-transparent rounded-lg focus:ring-[#776B5D] focus:ring-2 w-full text-[#776B5D] appearance-none"
           >
             <option value="available">Available</option>
             <option value="unavailable">Unavailable</option>

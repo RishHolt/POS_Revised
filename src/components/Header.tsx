@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Search, Bell, Menu } from "lucide-react";
+import { Bell, Menu } from "lucide-react";
 import { getCurrentUser, getUserDisplayName } from "../utils/auth";
 
 interface HeaderProps {
